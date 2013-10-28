@@ -89,7 +89,7 @@ void MET::allPlots(AllSamples samples){
 }
 
 void MET::setMetType(TString metType){
-	objName += "/"+metType;
+	objName = "MET/"+metType;
 }
 
 } /* namespace std */

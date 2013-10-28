@@ -10,6 +10,8 @@
 #include <iostream>
 #include "../interface/Objects/MET.h"
 #include "../interface/Objects/Jets.h"
+#include "../interface/Objects/Photons.h"
+#include "../interface/Objects/DiLepton.h"
 #include "../interface/Objects/CutFlow.h"
 
 using namespace std;
@@ -22,14 +24,20 @@ int main() {
 
 	AllSamples samples;
 
-	CutFlow cutflow;
-	cutflow.allPlots(samples);
+//	CutFlow cutflow;
+//	cutflow.allPlots(samples);
+//
+//	Jets jets;
+//	jets.allPlots(samples);
+//
+//	MET met;
+//	met.allPlots(samples);
+//
+//	Photons photons;
+//	photons.allPlots(samples);
 
-	Jets jets;
-	jets.allPlots(samples);
-
-	MET met;
-	met.allPlots(samples);
+	DiLepton dilepton;
+	dilepton.allPlots(samples);
 
 	return 0;
 

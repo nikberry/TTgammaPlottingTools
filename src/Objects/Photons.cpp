@@ -49,6 +49,7 @@ void Photons::allPlots(AllSamples samples){
 	savePlot(samples, photon_eta);
 
 	setPhotonSel("NminusOnePhotons");
+	setChannel("MuMu");
 	savePlot(samples, photon_pt);
 	savePlot(samples, photon_eta);
 	setChannel("EE");

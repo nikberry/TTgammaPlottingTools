@@ -24,17 +24,17 @@ int main() {
 
 	AllSamples samples;
 
-//	CutFlow cutflow;
-//	cutflow.allPlots(samples);
-//
-//	Jets jets;
-//	jets.allPlots(samples);
-//
-//	MET met;
-//	met.allPlots(samples);
-//
-//	Photons photons;
-//	photons.allPlots(samples);
+	CutFlow cutflow;
+	cutflow.allPlots(samples);
+
+	Jets jets;
+	jets.allPlots(samples);
+
+	MET met;
+	met.allPlots(samples);
+
+	Photons photons;
+	photons.allPlots(samples);
 
 	DiLepton dilepton;
 	dilepton.allPlots(samples);

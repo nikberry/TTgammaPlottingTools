@@ -54,7 +54,7 @@ void Object::savePlot(AllSamples samples, Variable variable){
 
 TH1D* Object::readHistogram(Sample sample, Variable variable) {
 
-	cout << "plot: " << selection+"/"+channel+"/"+selection2+"/"+objName+"/"+variable.name << endl;
+///	cout << "plot: " << selection+"/"+channel+"/"+selection2+"/"+objName+"/"+variable.name << endl;
 
 	TH1D* plot = (TH1D*) sample.file->Get(selection+"/"+channel+"/"+selection2+"/"+objName+"/"+variable.name+"_1btag");
 	TH1D* plot1 = (TH1D*) sample.file->Get(selection+"/"+channel+"/"+selection2+"/"+objName+"/"+variable.name+"_2btags");
@@ -177,8 +177,6 @@ void Object::standardPlot(TH1D* data, THStack *hs, AllSamples samples, Variable 
 	textChan->Draw();
 	TText* textPrelim = doPrelim(0.58,0.96);
 	textPrelim->Draw();
-
-	cout << "saving plot shit" << endl;
 
 	if(Globals::doLogPlot){
 		c1->SetLogy();

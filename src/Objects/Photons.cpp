@@ -48,6 +48,15 @@ void Photons::allPlots(AllSamples samples){
 	savePlot(samples, photon_pt);
 	savePlot(samples, photon_eta);
 
+	setPhotonSel("NminusOnePhotons");
+	savePlot(samples, photon_pt);
+	savePlot(samples, photon_eta);
+	setChannel("EE");
+	savePlot(samples, photon_pt);
+	savePlot(samples, photon_eta);
+	setChannel("EMu");
+	savePlot(samples, photon_pt);
+	savePlot(samples, photon_eta);
 }
 
 void Photons::setPhotonSel(TString photon_sel){

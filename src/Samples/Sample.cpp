@@ -20,7 +20,7 @@ Sample::Sample() {
 
 Sample::Sample(TString sample, Color_t fColor, Color_t lColor) {
 	cout << "Getting file: " << sample + "_19584pb_PFElectron_PFMuon_PF2PATJets_patType1CorrectedPFMet_Photon.root" << endl;
-	file = new TFile ("~/workspace/TTGammaFiles/" + sample + "_19584pb_PFElectron_PFMuon_PF2PATJets_patType1CorrectedPFMet_Photon.root");
+	file = new TFile ("/data1/TTGammaAnalysis/HistogramFiles/Version7/central/" + sample + "_19584pb_PFElectron_PFMuon_PF2PATJets_patType1CorrectedPFMet_Photon.root");
 	histo = new TH1D;
 	fillColor = fColor;
 	lineColor = lColor;

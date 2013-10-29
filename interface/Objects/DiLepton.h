@@ -17,8 +17,6 @@ public:
 	DiLepton();
 	virtual ~DiLepton();
 	void allPlots(AllSamples samples);
-private:
-	void setSelectionChannelAndObj(TString sel_name, TString chan1, TString chan2);
 };
 
 } /* namespace std */

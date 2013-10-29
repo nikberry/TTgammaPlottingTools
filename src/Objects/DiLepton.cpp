@@ -24,16 +24,24 @@ void DiLepton::allPlots(AllSamples samples){
 	//  Variable::Variable(TString name_temp, TString xTitle_temp, double minX_temp, double maxX_temp, int rebinFact_temp)
 	Variable pt_lead("LeadLepton_Pt", "lead #mu p_{T}", 0, 300, 5);
 
-	setSelectionChannelAndObj("TTbarDiLeptonAnalysis", "MuMu", "DiLepton");
+	setSelectionAndChannel("TTbarDiLeptonAnalysis", "MuMu");
 	savePlot(samples, pt_lead);
 
-}
+	setChannel("EE");
+	savePlot(samples, pt_lead);
 
+	setChannel("EMu");
+	savePlot(samples, pt_lead);
 
-void DiLepton::setSelectionChannelAndObj(TString sel_name, TString chan1, TString chan2){
-	selection = sel_name;
-	channel = chan1;
-	objName = chan2;
+	setSelectionAndChannel("TTbarPhotonAnalysis", "MuMu");
+	savePlot(samples, pt_lead);
+
+	setChannel("EE");
+	savePlot(samples, pt_lead);
+
+	setChannel("EMu");
+	savePlot(samples, pt_lead);
+
 }
 
 } /* namespace std */

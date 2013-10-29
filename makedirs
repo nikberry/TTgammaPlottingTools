@@ -18,7 +18,6 @@ mkdir Plots/ControlPlots/TTbarPhotonAnalysis/EE/MET/patType1CorrectedPFMet
 mkdir Plots/ControlPlots/TTbarPhotonAnalysis/EE/MET/patType1CorrectedPFMet/Log
 mkdir Plots/ControlPlots/TTbarPhotonAnalysis/EE/Photons/SignalPhotons/Log
 mkdir Plots/ControlPlots/TTbarPhotonAnalysis/EE/Photons/NminusOnePhotons/Log
-mkdir Plots/ControlPlots/TTbarPhotonAnalysis/EE/Photons/Photons/Log
 mkdir Plots/ControlPlots/TTbarPhotonAnalysis/EE/DiLepton/Log
 mkdir Plots/ControlPlots/TTbarPhotonAnalysis/MuMu/Jets
 mkdir Plots/ControlPlots/TTbarPhotonAnalysis/MuMu/MET

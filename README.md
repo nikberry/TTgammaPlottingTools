@@ -4,7 +4,8 @@ These save time and are much easier to use than the scripts
 Step-by-step guide:
 
 1. Fork the tools from git and clone it into a folder from src/ for example:
-git clone  https://github.com/<user>/TTgammaPlottingTools.git TTgammaPlottingTools
+git clone  https://github.com/user_name/TTgammaPlottingTools.git TTgammaPlottingTools
+and cd TTgammaPlottingTools
 
 2. Need to hadd files (if not done already, has been done for latest version V7
 of files) such that DY, SingleTop and QCD are merged (makes things

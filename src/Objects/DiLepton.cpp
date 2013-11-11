@@ -22,15 +22,15 @@ DiLepton::~DiLepton() {
 void DiLepton::allPlots(AllSamples samples){
 
 	//  Variable::Variable(TString name_temp, TString xTitle_temp, double minX_temp, double maxX_temp, int rebinFact_temp)
-	Variable pt_lead("LeadLepton_Pt", "lead lepton p_{T}", 0, 300, 5);
-	Variable pt_second("SecondLepton_Pt", "second lepton p_{T}", 0, 300, 5); 
-        Variable eta_lead("LeadLepton_Eta", "lead lepton #eta", -3, 3, 5);
-        Variable eta_second("SecondLepton_Eta", "second lepton #eta", -3, 3, 5);
-	Variable abseta_lead("LeadLepton_AbsEta", "lead lepton |#eta|", 0, 3, 5);
-        Variable abseta_second("SecondLepton_AbsEta", "second lepton |#eta|", 0, 3, 5);
-        Variable phi_lead("LeadLepton_Phi", "lead lepton #phi", -4, 4, 5);
-        Variable phi_second("SecondLepton_Phi", "second lepton #phi", -4, 4, 5);
-	Variable dileptonmass("diLepton_Mass", "M_{ll}", 0, 400, 5);
+	Variable pt_lead("LeadLepton_Pt", "lead lepton p_{T}", 0, 300, 10);
+	Variable pt_second("SecondLepton_Pt", "second lepton p_{T}", 0, 300, 10); 
+        Variable eta_lead("LeadLepton_Eta", "lead lepton #eta", -3, 3, 10);
+        Variable eta_second("SecondLepton_Eta", "second lepton #eta", -3, 3, 10);
+	Variable abseta_lead("LeadLepton_AbsEta", "lead lepton |#eta|", 0, 3, 10);
+        Variable abseta_second("SecondLepton_AbsEta", "second lepton |#eta|", 0, 3, 10);
+        Variable phi_lead("LeadLepton_Phi", "lead lepton #phi", -4, 4, 10);
+        Variable phi_second("SecondLepton_Phi", "second lepton #phi", -4, 4, 10);
+	Variable dileptonmass("diLepton_Mass", "M_{ll}", 0, 400, 10);
 
 	setSelectionAndChannel("TTbarDiLeptonAnalysis", "MuMu");
 	savePlot(samples, pt_lead);

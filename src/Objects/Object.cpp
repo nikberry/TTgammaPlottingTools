@@ -249,7 +249,7 @@ void Object::ratioPlot(TH1D* data, THStack *hs, AllSamples samples, Variable var
 
 //	Will need to see if this works in other situations - au moment il ne fonctionne pas pour des valeurs soin de zero.
 	if(variable.minX < 0. && ratio->GetBinWidth(1)){
-		ratio->SetAxisRange(variable.minX+ratio->GetBinWidth(1)/2, fabs(variable.minX+ratio->GetBinWidth(1)/2));
+		ratio->SetAxisRange(variable.minX+ratio->GetBinWidth(1)/2, fabs(variable.maxX+ratio->GetBinWidth(1)/2));
 	}else{
 		ratio->SetAxisRange(0, variable.maxX-ratio->GetBinWidth(1)/2);
 	}

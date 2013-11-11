@@ -254,7 +254,7 @@ void CutFlow::ratioCutFlowPlot(TH1D* data, THStack *hs, AllSamples samples, Vari
 	ratio->SetTitleOffset(0.8, "X");
 	ratio->GetYaxis()->SetTitle("data/MC");ratio->GetYaxis()->SetTitleSize(0.1);
 	ratio->GetXaxis()->SetTitle(variable.xTitle);ratio->GetXaxis()->SetTitleSize(0.15);
-
+	ratio->SetMarkerSize(0.);
 	ratio->Draw("ep");
 
 	TLine *line = new TLine(variable.minX,1,variable.maxX,1);
@@ -314,20 +314,20 @@ void CutFlow::writeTable(AllSamples samples, Variable variable){
 		cout << " & $t\\bar{t}+\\gamma$ & $t\\bar{t}$ & w+jets & z+jets & diboson & single-t & qcd & all MC & data" << endl;
 
 		for(int i = 0; i < samples.ttbar->histo->GetNbinsX(); i++){
-			cout << step[i] << " & " << samples.ttgamma->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ttgamma->histo->GetBinError(i+1)
-					<< " & " << samples.ttbar->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ttbar->histo->GetBinError(i+1)
-					<< " & " << samples.wjets->histo->GetBinContent(i+1) << " $\\pm$ " << samples.wjets->histo->GetBinError(i+1)
-					<< " & " << samples.zjets->histo->GetBinContent(i+1) << " $\\pm$ " << samples.zjets->histo->GetBinError(i+1)
-					<< " & " << samples.diboson->histo->GetBinContent(i+1) << " $\\pm$ " << samples.diboson->histo->GetBinError(i+1)
-					<< " & " << samples.single_t->histo->GetBinContent(i+1) << " $\\pm$ " << samples.single_t->histo->GetBinError(i+1)
-					<< " & " << samples.qcd->histo->GetBinContent(i+1) << " $\\pm$ " << samples.qcd->histo->GetBinError(i+1)
-					<< " & " << allMC->GetBinContent(i+1) << " $\\pm$ " << allMC->GetBinError(i+1);
+			cout << step[i] << " & " << samples.ttgamma->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ttgamma->histo->GetBinError(i+1) << " \\"
+					<< " & " << samples.ttbar->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ttbar->histo->GetBinError(i+1) << " \\"
+					<< " & " << samples.wjets->histo->GetBinContent(i+1) << " $\\pm$ " << samples.wjets->histo->GetBinError(i+1) << " \\"
+					<< " & " << samples.zjets->histo->GetBinContent(i+1) << " $\\pm$ " << samples.zjets->histo->GetBinError(i+1) << " \\"
+					<< " & " << samples.diboson->histo->GetBinContent(i+1) << " $\\pm$ " << samples.diboson->histo->GetBinError(i+1) << " \\"
+					<< " & " << samples.single_t->histo->GetBinContent(i+1) << " $\\pm$ " << samples.single_t->histo->GetBinError(i+1) << " \\"
+					<< " & " << samples.qcd->histo->GetBinContent(i+1) << " $\\pm$ " << samples.qcd->histo->GetBinError(i+1) << "\\"
+					<< " & " << allMC->GetBinContent(i+1) << " $\\pm$ " << allMC->GetBinError(i+1) << " \\";
 			if(channel == "MuMu")
-				cout << " & " << samples.mumu_data->histo->GetBinContent(i+1) << " $\\pm$ " << samples.mumu_data->histo->GetBinError(i+1)  << endl;
+				cout << " & " << samples.mumu_data->histo->GetBinContent(i+1) << " $\\pm$ " << samples.mumu_data->histo->GetBinError(i+1) << " \\"  << endl;
 			else if(channel == "EE")
-				cout << " & " << samples.ee_data->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ee_data->histo->GetBinError(i+1)  << endl;
+				cout << " & " << samples.ee_data->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ee_data->histo->GetBinError(i+1) << " \\"  << endl;
 			else if(channel == "EE")
-				cout << " & " << samples.emu_data->histo->GetBinContent(i+1) << " $\\pm$ " << samples.emu_data->histo->GetBinError(i+1)  << endl;
+				cout << " & " << samples.emu_data->histo->GetBinContent(i+1) << " $\\pm$ " << samples.emu_data->histo->GetBinError(i+1) << " \\"  << endl;
 
 		}
 	}else{
@@ -336,20 +336,20 @@ void CutFlow::writeTable(AllSamples samples, Variable variable){
 		cout << " & $t\\bar{t}+\\gamma$ & $t\\bar{t}$ & w+jets & z+jets & diboson & single-t & qcd & all MC & data" << endl;
 
 		for(int i = 0; i < samples.ttbar->histo->GetNbinsX(); i++){
-			cout << step[i] << " & " << samples.ttgamma->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ttgamma->histo->GetBinError(i+1)
-					<< " & " << samples.ttbar->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ttbar->histo->GetBinError(i+1)
-					<< " & " << samples.wjets->histo->GetBinContent(i+1) << " $\\pm$ " << samples.wjets->histo->GetBinError(i+1)
-					<< " & " << samples.zjets->histo->GetBinContent(i+1) << " $\\pm$ " << samples.zjets->histo->GetBinError(i+1)
-					<< " & " << samples.diboson->histo->GetBinContent(i+1) << " $\\pm$ " << samples.diboson->histo->GetBinError(i+1)
-					<< " & " << samples.single_t->histo->GetBinContent(i+1) << " $\\pm$ " << samples.single_t->histo->GetBinError(i+1)
-					<< " & " << samples.qcd->histo->GetBinContent(i+1) << " $\\pm$ " << samples.qcd->histo->GetBinError(i+1)
-					<< " & " << allMC->GetBinContent(i+1) << " $\\pm$ " << allMC->GetBinError(i+1);
+			cout << step[i] << " & " << samples.ttgamma->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ttgamma->histo->GetBinError(i+1) << " \\"
+					<< " & " << samples.ttbar->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ttbar->histo->GetBinError(i+1) << " \\" 
+					<< " & " << samples.wjets->histo->GetBinContent(i+1) << " $\\pm$ " << samples.wjets->histo->GetBinError(i+1) << " \\"
+					<< " & " << samples.zjets->histo->GetBinContent(i+1) << " $\\pm$ " << samples.zjets->histo->GetBinError(i+1) << " \\"
+					<< " & " << samples.diboson->histo->GetBinContent(i+1) << " $\\pm$ " << samples.diboson->histo->GetBinError(i+1) << " \\"
+					<< " & " << samples.single_t->histo->GetBinContent(i+1) << " $\\pm$ " << samples.single_t->histo->GetBinError(i+1) << " \\"
+					<< " & " << samples.qcd->histo->GetBinContent(i+1) << " $\\pm$ " << samples.qcd->histo->GetBinError(i+1) << " \\"
+					<< " & " << allMC->GetBinContent(i+1) << " $\\pm$ " << allMC->GetBinError(i+1) << "\\";
 			if(channel == "MuMu")
-				cout << " & " << samples.mumu_data->histo->GetBinContent(i+1) << " $\\pm$ " << samples.mumu_data->histo->GetBinError(i+1)  << endl;
+				cout << " & " << samples.mumu_data->histo->GetBinContent(i+1) << " $\\pm$ " << samples.mumu_data->histo->GetBinError(i+1) << " \\"  << endl;
 			else if(channel == "EE")
-				cout << " & " << samples.ee_data->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ee_data->histo->GetBinError(i+1)  << endl;
+				cout << " & " << samples.ee_data->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ee_data->histo->GetBinError(i+1) << " \\" << endl;
 			else if(channel == "EMu")
-				cout << " & " << samples.emu_data->histo->GetBinContent(i+1) << " $\\pm$ " << samples.emu_data->histo->GetBinError(i+1)  << endl;
+				cout << " & " << samples.emu_data->histo->GetBinContent(i+1) << " $\\pm$ " << samples.emu_data->histo->GetBinError(i+1) << " \\"  << endl;
 
 		}
 	}

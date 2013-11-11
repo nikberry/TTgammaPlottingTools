@@ -247,7 +247,7 @@ void Object::ratioPlot(TH1D* data, THStack *hs, AllSamples samples, Variable var
 	ratio->SetMaximum(2);
 	ratio->SetMinimum(0.);
 
-//	Will need to see if this works in other situations
+//	Will need to see if this works in other situations - au moment il ne fonctionne pas pour des valeurs soin de zero.
 	if(variable.minX < 0. && ratio->GetBinWidth(1)){
 		ratio->SetAxisRange(variable.minX+ratio->GetBinWidth(1)/2, fabs(variable.minX+ratio->GetBinWidth(1)/2));
 	}else{
@@ -259,7 +259,7 @@ void Object::ratioPlot(TH1D* data, THStack *hs, AllSamples samples, Variable var
 	ratio->SetTitleOffset(0.8, "X");
 	ratio->GetYaxis()->SetTitle("data/MC");ratio->GetYaxis()->SetTitleSize(0.1);
 	ratio->GetXaxis()->SetTitle(variable.xTitle);ratio->GetXaxis()->SetTitleSize(0.15);
-
+	ratio->SetMarkerSize(0.);
 	ratio->Draw("ep");
 
 	TLine *line = new TLine(variable.minX,1,variable.maxX,1);

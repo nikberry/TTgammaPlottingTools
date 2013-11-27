@@ -71,7 +71,24 @@ TH1D* Object::readHistogram(Sample sample, Variable variable) {
 	if(Globals::addOverFlow)
 		addOverFlow(plot, variable);
 
+
+// Unfinished
+// 	double rebinning;
+// 	if(((int)(plot->Integral()) % 2 == 0) && (int)(plot->GetNbinsX()) % 2 == 0)
+// 		rebinning = (double)(plot->Integral()) / (double)(plot->GetNbinsX());
+// 	if(((int)(plot->Integral()) % 2 != 0) && (int)((plot->GetNbinsX() % 2 != 0)))
+// 		rebinning = (double)(plot->Integral()) / (double)(plot->GetNbinsX());
+// 	if(((int)(plot->Integral()) % 2 == 0) && (int)((plot->GetNbinsX() % 2 != 0)))	
+// 		rebinning = (double)(plot->Integral()) / (double)(plot->GetNbinsX()+1);
+// 	if(((int)(plot->Integral()) % 2 != 0) && (int)(plot->GetNbinsX() % 2 == 0))	
+// 		rebinning = plot->Integral()+1 / plot->GetNbinsX();	
+// 		
+ 	cout << plot->Integral() << endl;
+	
+
+	
 	plot->Rebin(variable.rebinFact);
+//	plot->SetBinsLength(rebinning);
 
 	return plot;
 }
@@ -352,5 +369,19 @@ void Object::setSelectionAndChannel(TString sel_name, TString chan){
 void Object::setChannel(TString chan){
 	channel = chan;
 }
+
+//void Object::rebinMethod(double rebinning){
+//
+//	TH1D* plot;
+//	double rebinning;
+//	rebinning = plot->Integral() / plot->GetNbinsX();
+//	
+//	cout << plot->Integral() << endl;
+//	
+// 	if(variable.minX < 0)
+// 		double range = -variable.minX + variable.maxX;
+// 	else
+// 		double range = variable.maxX;
+//}
 
 } /* namespace std */

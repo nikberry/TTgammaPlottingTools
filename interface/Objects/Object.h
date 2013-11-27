@@ -50,6 +50,7 @@ protected:
 	void standardPlot(TH1D* data, THStack *hs, AllSamples samples, Variable variable);
 	void ratioPlot(TH1D* data, THStack *hs, AllSamples samples, Variable variable);
 	void savePlot(AllSamples samples, Variable variable);
+//	void rebinMethod(double rebinning);
 };
 
 } /* namespace std */

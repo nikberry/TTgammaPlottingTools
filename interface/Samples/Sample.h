@@ -17,7 +17,7 @@ namespace std {
 class Sample {
 public:
 	Sample();
-	Sample(TString sample, Color_t fColor, Color_t lColor);
+	Sample(TString sample, Color_t fColor, Color_t lColor, TString systematic, TString eSystematic);
 	virtual ~Sample();
 	TFile* file;
 	TH1D* histo;

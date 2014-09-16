@@ -38,6 +38,7 @@ private:
 	TLegend* legend(AllSamples samples);
 	TText* doPrelim(double x_pos,double y_pos);
 	TText* doChan(double x_pos,double y_pos);
+	TText* doChanLoose(double x_pos,double y_pos);
 	THStack* buildStack(AllSamples samples, Variable variable);
 	TH1D* allMChisto(AllSamples samples, Variable variable);
 	TH1D* hashErrors(AllSamples samples, Variable variable);

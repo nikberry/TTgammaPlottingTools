@@ -12,15 +12,15 @@ namespace std {
 
 Sample::Sample() {
 
-	file = new TFile;// ("~/workspace/TtbarWork/rootFilesV4/central/TTJet_19584pb_PFElectron_PFMuon_PF2PATJets_PFMET.root");
+	file = new TFile;
 	histo = new TH1D;
 	fillColor = kRed;
 	lineColor = kBlack;
 }
 
-Sample::Sample(TString sample, Color_t fColor, Color_t lColor) {
-	cout << "Getting file: " << sample + "_19584pb_PFElectron_PFMuon_PF2PATJets_patType1CorrectedPFMet_Photon.root" << endl;
-	file = new TFile ("/data1/TTGammaAnalysis/HistogramFiles/Version7/central/" + sample + "_19584pb_PFElectron_PFMuon_PF2PATJets_patType1CorrectedPFMet_Photon.root");
+Sample::Sample(TString sample, Color_t fColor, Color_t lColor, TString systematic, TString eSystematic) {
+	cout << "Getting file: " << systematic +"/"+ sample + "_19584pb_PFElectron_PFMuon_PF2PATJets_patType1CorrectedPFMet_Photon.root" << endl;
+	file = new TFile ("/data1/TTGammaAnalysis/HistogramFiles/Version14LooseBtag/"+ systematic +"/" + sample + "_19584pb_PFElectron_PFMuon_PF2PATJets_patType1CorrectedPFMet_Photon.root");
 	histo = new TH1D;
 	fillColor = fColor;
 	lineColor = lColor;

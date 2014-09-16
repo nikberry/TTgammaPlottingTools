@@ -9,22 +9,25 @@
 #define ALLSAMPLES_H_
 
 #include "Sample.h"
+#include "TObject.h"
 
 namespace std {
 
 class AllSamples {
 public:
-	AllSamples();
+	AllSamples(TString systematic, TString eSystematic);
 	virtual ~AllSamples();
 
 	Sample* mumu_data;
 	Sample* ee_data;
 	Sample* emu_data;
+	Sample* signal;
 	Sample* ttgamma;
 	Sample* ttbar;
 	Sample* single_t;
 	Sample* wjets;
-	Sample* zjets;
+	Sample* dyjets;
+	Sample* vjets;
 	Sample* diboson;
 	Sample* qcd;
 };

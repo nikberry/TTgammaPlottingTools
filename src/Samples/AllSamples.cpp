@@ -9,46 +9,54 @@
 
 namespace std {
 
-AllSamples::AllSamples() {
+AllSamples::AllSamples(TString systematic, TString eSystematic) {
 
 	mumu_data = new Sample;
-	Sample mumu_temp("DoubleMu", kBlack, kBlack);
+	Sample mumu_temp("DoubleMu", kBlack, kBlack, systematic, eSystematic);
 	*mumu_data = mumu_temp;
 
 	ee_data = new Sample;
-	Sample ee_temp("DoubleElectron", kBlack, kBlack);
+	Sample ee_temp("DoubleElectron", kBlack, kBlack, systematic, eSystematic);
 	*ee_data = ee_temp;
 
 	emu_data = new Sample;
-	Sample emu_temp("MuEG", kBlack, kBlack);
+	Sample emu_temp("MuEG", kBlack, kBlack, systematic, eSystematic);
 	*emu_data = emu_temp;
 
+	signal = new Sample;
+        Sample signal_temp("TTGamma", kAzure+8, kBlack, systematic, eSystematic);
+        *signal = signal_temp;
+
 	ttgamma = new Sample;
-	Sample ttgamma_temp("TTGamma", kAzure+8, kBlack);
+	Sample ttgamma_temp("TTGamma", kAzure+8, kBlack, systematic, eSystematic);
 	*ttgamma = ttgamma_temp;
 
 	ttbar = new Sample;
-	Sample ttbar_temp("TTJet", kRed, kBlack);
+	Sample ttbar_temp("TTJet", kRed, kBlack, systematic, eSystematic);
 	*ttbar = ttbar_temp;
 
 	single_t = new Sample;
-	Sample single_t_temp("SingleTop", kMagenta, kBlack);
+	Sample single_t_temp("SingleTop", kMagenta, kBlack, systematic, eSystematic);
 	*single_t = single_t_temp;
 
 	wjets = new Sample;
-	Sample wjets_temp("WJetsToLNu", kGreen-3, kBlack);
+	Sample wjets_temp("WJetsToLNu", kGreen-3, kBlack, systematic, eSystematic);
 	*wjets = wjets_temp;
 
-	zjets = new Sample;
-	Sample zjets_temp("DYJetsToLL", kAzure-2, kBlack);
-	*zjets = zjets_temp;
+	dyjets = new Sample;
+	Sample dyjets_temp("DYJetsToLL", kAzure-2, kBlack, systematic, eSystematic);
+	*dyjets = dyjets_temp;
+
+        vjets = new Sample;
+        Sample vjets_temp("VJets", kGreen-3, kBlack, systematic, eSystematic);
+        *vjets = vjets_temp;
 
 	diboson = new Sample;
-	Sample diboson_temp("DiBoson", kGreen+3, kBlack);
+	Sample diboson_temp("DiBoson", kGreen+3, kBlack, systematic, eSystematic);
 	*diboson = diboson_temp;
 
 	qcd = new Sample;
-	Sample qcd_temp("QCD_All", kYellow, kBlack);
+	Sample qcd_temp("QCD_All", kYellow, kBlack, systematic, eSystematic);
 	*qcd = qcd_temp;
 }
 

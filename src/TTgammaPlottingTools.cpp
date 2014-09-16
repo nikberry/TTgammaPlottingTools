@@ -13,6 +13,7 @@
 #include "../interface/Objects/Photons.h"
 #include "../interface/Objects/DiLepton.h"
 #include "../interface/Objects/CutFlow.h"
+#include "../interface/Objects/Fit.h"
 
 using namespace std;
 
@@ -22,7 +23,8 @@ int main() {
 	TH1F* dummy = new TH1F("dummy", "dummy", 10, 0, 1);
 	delete dummy;
 
-	AllSamples samples;
+	AllSamples samples("central", "");
+	AllSamples2D samples2d("central", "");
 
 	CutFlow cutflow;
 	cutflow.allPlots(samples);
@@ -38,6 +40,10 @@ int main() {
 
 	DiLepton dilepton;
 	dilepton.allPlots(samples);
+
+//      do not do muon plots and fits at the same time as it messes up the eta distn.
+//        Fit fit;
+//        fit.allFits();
 
 	return 0;
 

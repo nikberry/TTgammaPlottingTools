@@ -31,18 +31,37 @@ CutFlow::~CutFlow() {
 void CutFlow::allPlots(AllSamples samples){
 
 //  Variable::Variable(TString name_temp, TString xTitle_temp, double minX_temp, double maxX_temp, int rebinFact_temp)
-	Variable mumu_sel("TTbarMuMuRefSelection", "selection step", -1.5, 8.5, 1);
+	Variable mumu_sel("TTbarMuMuRefSelection", "selection step", -1.5, 9.5, 1);
+//	Variable mumu_sel("TTbarMuMuRefSelection", "selection step", -1.5, 8.5, 1); //no btgas
 	saveCutFlowPlot(samples, mumu_sel);
 
 	setSelectionAndChannel("EventCount", "EE");
 
-	Variable ee_sel("TTbarEERefSelection", "selection step", -1.5, 8.5, 1);
+	Variable ee_sel("TTbarEERefSelection", "selection step", -1.5, 9.5, 1);
+//	Variable ee_sel("TTbarEERefSelection", "selection step", -1.5, 8.5, 1); //no btags
 	saveCutFlowPlot(samples, ee_sel);
 
 	setSelectionAndChannel("EventCount", "EMu");
 
-	Variable emu_sel("TTbarEMuRefSelection", "selection step", -1.5, 6.5, 1);
+	Variable emu_sel("TTbarEMuRefSelection", "selection step", -1.5, 7.5, 1);
+//	Variable emu_sel("TTbarEMuRefSelection", "selection step", -1.5, 6.5, 1); //no btags
 	saveCutFlowPlot(samples, emu_sel);
+	
+	setSelectionAndChannel("EventCount", "MuMu");	
+	
+	Variable mumu_loose_sel("TTbarMuMuLooseRefSelection", "selection step", -1.5, 7.5, 1); //check
+	saveCutFlowPlot(samples, mumu_loose_sel);
+	
+	setSelectionAndChannel("EventCount", "EE");
+	
+	Variable ee_loose_sel("TTbarEELooseRefSelection", "selection step", -1.5, 7.5, 1);
+	saveCutFlowPlot(samples, ee_loose_sel);
+	
+	setSelectionAndChannel("EventCount", "EMu");
+	
+	Variable emu_loose_sel("TTbarEMuLooseRefSelection", "selection step", -1.5, 5.5, 1);
+	saveCutFlowPlot(samples, emu_loose_sel);
+	
 
 }
 
@@ -95,7 +114,7 @@ void CutFlow::readCutFlowHistos(AllSamples samples, Variable variable){
 	TH1D* ttbar = readCutFlowHistogram(*samples.ttbar, variable);
 	TH1D* single_t = readCutFlowHistogram(*samples.single_t, variable);
 	TH1D* wjets = readCutFlowHistogram(*samples.wjets, variable);
-	TH1D* zjets = readCutFlowHistogram(*samples.zjets, variable);
+	TH1D* dyjets = readCutFlowHistogram(*samples.dyjets, variable);
 	TH1D* diboson = readCutFlowHistogram(*samples.diboson, variable);
 	TH1D* qcd = readCutFlowHistogram(*samples.qcd, variable);
 
@@ -107,7 +126,7 @@ void CutFlow::readCutFlowHistos(AllSamples samples, Variable variable){
 	samples.ttbar->SetHisto(ttbar);
 	samples.single_t->SetHisto(single_t);
 	samples.wjets->SetHisto(wjets);
-	samples.zjets->SetHisto(zjets);
+	samples.dyjets->SetHisto(dyjets);
 	samples.diboson->SetHisto(diboson);
 	samples.qcd->SetHisto(qcd);
 }
@@ -119,7 +138,7 @@ THStack* CutFlow::buildStack(AllSamples samples, Variable variable){
 	hs->Add(samples.qcd->histo);
 	hs->Add(samples.wjets->histo);
 	hs->Add(samples.diboson->histo);
-	hs->Add(samples.zjets->histo);
+	hs->Add(samples.dyjets->histo);
 	hs->Add(samples.single_t->histo);
 	hs->Add(samples.ttbar->histo);
 	hs->Add(samples.ttgamma->histo);
@@ -134,7 +153,7 @@ TH1D* CutFlow::allMChisto(AllSamples samples, Variable variable){
 	allMC->Add(samples.ttgamma->histo);
 	allMC->Add(samples.qcd->histo);
 	allMC->Add(samples.diboson->histo);
-	allMC->Add(samples.zjets->histo);
+	allMC->Add(samples.dyjets->histo);
 	allMC->Add(samples.wjets->histo);
 	allMC->Add(samples.single_t->histo);
 
@@ -294,7 +313,7 @@ TLegend* CutFlow::legend(AllSamples samples){
 		tleg->AddEntry(samples.ttgamma->histo , "t#bar{t}+#gamma", "f");
 		tleg->AddEntry(samples.ttbar->histo , "t#bar{t}", "f");
 		tleg->AddEntry(samples.single_t->histo, "Single Top"      , "f");
-		tleg->AddEntry(samples.zjets->histo , "Z+Jets", "f");
+		tleg->AddEntry(samples.dyjets->histo , "Z+Jets", "f");
 		tleg->AddEntry(samples.diboson->histo , "WW/ZZ/WZ", "f");
 		tleg->AddEntry(samples.wjets->histo , "W+Jets", "f");
 		tleg->AddEntry(samples.qcd->histo, "QCD"      , "f");
@@ -309,15 +328,16 @@ void CutFlow::writeTable(AllSamples samples, Variable variable){
     TH1D * allMC = allMChisto(samples, variable);
 
 	if(channel == "MuMu" || channel == "EE"){
-		TString step[10] = {"Skim" ,"Cleaning and HLT","Di-lepton Sel", "m(Z) veto", "$\\geq$ 1 jet", "$\\geq$ 2 jets", "$\\slash{E_{T}}$ cut", "$\\geq$ 1 CSV b-tag", "$\\geq$ 1 Good Photon" , "1 Good Photon"};
-		//TString step[11] = { "Skim" ,"Cleaning and HLT","Di-lepton Sel", "#geq 1 jets", "#geq 2 jets", "#geq1 CSV b-tag", "#geq1 Good Photon", "1 Good Photon"};
+		TString step[11] = {"Skim" ,"Cleaning and HLT","Di-lepton Sel", "m(Z) veto", "$\\geq$ 1 jet", "$\\geq$ 2 jets", "$\\slash{E_{T}}$ cut", "$\\geq$ 1 CSV b-tag",
+		"$\\geq$ 1 Photon Presel", "$\\geq$ 1 Good Photon Postsel" , "1 Good Photon Postsel"};
+		//TString step[8] = { "Skim" ,"Cleaning and HLT","Di-lepton Sel", "#geq 1 jets", "#geq 2 jets", "#geq1 CSV b-tag", "#geq1 Good Photon", "1 Good Photon"};
 		cout << " & $t\\bar{t}+\\gamma$ & $t\\bar{t}$ & w+jets & z+jets & diboson & single-t & qcd & all MC & data" << endl;
 
 		for(int i = 0; i < samples.ttbar->histo->GetNbinsX(); i++){
 			cout << step[i] << " & " << samples.ttgamma->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ttgamma->histo->GetBinError(i+1) << " \\"
 					<< " & " << samples.ttbar->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ttbar->histo->GetBinError(i+1) << " \\"
 					<< " & " << samples.wjets->histo->GetBinContent(i+1) << " $\\pm$ " << samples.wjets->histo->GetBinError(i+1) << " \\"
-					<< " & " << samples.zjets->histo->GetBinContent(i+1) << " $\\pm$ " << samples.zjets->histo->GetBinError(i+1) << " \\"
+					<< " & " << samples.dyjets->histo->GetBinContent(i+1) << " $\\pm$ " << samples.dyjets->histo->GetBinError(i+1) << " \\"
 					<< " & " << samples.diboson->histo->GetBinContent(i+1) << " $\\pm$ " << samples.diboson->histo->GetBinError(i+1) << " \\"
 					<< " & " << samples.single_t->histo->GetBinContent(i+1) << " $\\pm$ " << samples.single_t->histo->GetBinError(i+1) << " \\"
 					<< " & " << samples.qcd->histo->GetBinContent(i+1) << " $\\pm$ " << samples.qcd->histo->GetBinError(i+1) << "\\"
@@ -331,15 +351,17 @@ void CutFlow::writeTable(AllSamples samples, Variable variable){
 
 		}
 	}else{
-		TString step[8] = {"Skim" ,"Cleaning and HLT","Di-lepton Sel", "$\\geq$ 1 jet", "$\\geq$ 2 jets", "$\\geq$ 1 CSV b-tag", "$\\geq$ 1 Good Photon" , "1 Good Photon"};
-		//TString step[11] = { "Skim" ,"Cleaning and HLT","Di-lepton Sel", "#geq 1 jets", "#geq 2 jets", "#geq1 CSV b-tag", "#geq1 Good Photon", "1 Good Photon"};
+		TString step[9] = {"Skim" ,"Cleaning and HLT","Di-lepton Sel", "$\\geq$ 1 jet", "$\\geq$ 2 jets", "$\\geq$ 1 CSV b-tag", 
+					"$\\geq$ 1 Photon Presel", "$\\geq$ 1 Good Photon Postsel", "1 Good Photon Postsel"};
+		//TString step[11] = { "Skim" ,"Cleaning and HLT","Di-lepton Sel", "#geq 1 jets", "#geq 2 jets", "#geq1 CSV b-tag", "#geq 1 Photon Presel", "#geq1 Good Photon
+		//Postsel", "1 Good Photon Postsel"};
 		cout << " & $t\\bar{t}+\\gamma$ & $t\\bar{t}$ & w+jets & z+jets & diboson & single-t & qcd & all MC & data" << endl;
 
 		for(int i = 0; i < samples.ttbar->histo->GetNbinsX(); i++){
 			cout << step[i] << " & " << samples.ttgamma->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ttgamma->histo->GetBinError(i+1) << " \\"
 					<< " & " << samples.ttbar->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ttbar->histo->GetBinError(i+1) << " \\" 
 					<< " & " << samples.wjets->histo->GetBinContent(i+1) << " $\\pm$ " << samples.wjets->histo->GetBinError(i+1) << " \\"
-					<< " & " << samples.zjets->histo->GetBinContent(i+1) << " $\\pm$ " << samples.zjets->histo->GetBinError(i+1) << " \\"
+					<< " & " << samples.dyjets->histo->GetBinContent(i+1) << " $\\pm$ " << samples.dyjets->histo->GetBinError(i+1) << " \\"
 					<< " & " << samples.diboson->histo->GetBinContent(i+1) << " $\\pm$ " << samples.diboson->histo->GetBinError(i+1) << " \\"
 					<< " & " << samples.single_t->histo->GetBinContent(i+1) << " $\\pm$ " << samples.single_t->histo->GetBinError(i+1) << " \\"
 					<< " & " << samples.qcd->histo->GetBinContent(i+1) << " $\\pm$ " << samples.qcd->histo->GetBinError(i+1) << " \\"
@@ -359,7 +381,30 @@ void CutFlow::writeTable(AllSamples samples, Variable variable){
 TText* CutFlow::doChan(double x_pos,double y_pos){
 
 	  ostringstream stream;
-	  stream  << "#mu, #geq 4 jets, #geq 2 btags";
+	  if(channel=="MuMu"){
+	  	stream  << "#mu#mu, #geq 2 jets, #geq 1 btags";
+	  }else if(channel=="EE"){
+	  	stream  << "e#^+e#^-, #geq 2 jets, #geq 1 btags";
+	  }else
+	  	stream  << "e#mu, #geq 2 jets, #geq 1 btags";
+
+	  TLatex* text = new TLatex(x_pos, y_pos, stream.str().c_str());
+	  text->SetNDC(true);
+	  text->SetTextFont(62);
+	  text->SetTextSize(0.045);  // for thesis
+
+	  return text;
+}
+
+TText* CutFlow::doChanLoose(double x_pos,double y_pos){
+
+	  ostringstream stream;
+	  if(channel=="MuMu"){
+	  	stream  << "#mu#mu, #geq 1 jets, #geq 0 btags";
+	  }else if(channel=="EE"){
+	  	stream  << "e#^+e#^-, #geq 1 jets, #geq 0 btags";
+	  }else
+	  	stream  << "e#mu, #geq 1 jets, #geq 0 btags";
 
 	  TLatex* text = new TLatex(x_pos, y_pos, stream.str().c_str());
 	  text->SetNDC(true);
@@ -390,13 +435,15 @@ void CutFlow::setSelectionAndChannel(TString sel_name, TString chan){
 void CutFlow::setBinLabels(THStack* hs, TH1D* data){
 
 	if(channel == "MuMu" || channel == "EE"){
-		TString step[10] = {"Skim" ,"Cleaning and HLT","Di-lepton Sel", "m(Z) veto", "#geq 1 jet", "#geq 2 jets", "#slash{E_{T}} cut", "#geq1 CSV b-tag", "#geq1 Good Photon" , "1 Good Photon"};
+		TString step[11] = {"Skim" ,"Cleaning and HLT","Di-lepton Sel", "m(Z) veto", "#geq 1 jet", "#geq 2 jets", "#slash{E_{T}} cut", "#geq1 CSV b-tag",
+		 "#geq 1 Photon Presel", "#geq1 Good Photon Postsel" , "1 Good Photon Postsel"};
 		for(int i =0; i<data->GetNbinsX(); i++){
 			hs->GetXaxis()->SetBinLabel(i+1, step[i]);
 			data->GetXaxis()->SetBinLabel(i+1, step[i]);
 		}
 	}else{
-		TString step[8] = {"Skim" ,"Cleaning and HLT","Di-lepton Sel", "#geq 1 jet", "#geq 2 jets", "#geq1 CSV b-tag", "#geq1 Good Photon" , "1 Good Photon"};
+		TString step[9] = {"Skim" ,"Cleaning and HLT","Di-lepton Sel", "#geq 1 jet", "#geq 2 jets", "#geq1 CSV b-tag", "#geq 1 Photon Presel",  "#geq 1 Good Photon Postsel",
+		 "1 Good Photon Postsel"};
 		for(int i =0; i<data->GetNbinsX(); i++){
 			hs->GetXaxis()->SetBinLabel(i+1, step[i]);
 			data->GetXaxis()->SetBinLabel(i+1, step[i]);

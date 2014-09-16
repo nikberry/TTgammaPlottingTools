@@ -17,6 +17,7 @@ public:
 	Photons();
 	virtual ~Photons();
 	void allPlots(AllSamples samples);
+	void allPlots2D(AllSamples2D samples);
 private:
 	void setPhotonSel(TString photon_sel);
 };

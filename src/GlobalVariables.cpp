@@ -13,7 +13,7 @@ TString Globals::lumi = "19.7 fb^{-1}";
 
 bool Globals::addRatioPlot = true;
 bool Globals::addHashErrors= true;
-bool Globals::addOverFlow = true;
+bool Globals::addOverFlow = false;
 bool Globals::doLogPlot = false;
 
 } /* namespace std */

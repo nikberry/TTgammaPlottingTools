@@ -56,16 +56,17 @@ void feynman()
 
 if(diagramName == "ttgammadileptonsinglephoton"){
    TCurlyLine* gamma;
+   gamma->SetLineColor(kBlue);
    gamma = new TCurlyLine(65,40,80,95); gamma->SetWavy(); gamma->Draw();
    t.DrawLatex(69,75,"#gamma");
 }
 
 if(diagramName == "ttgammadilepton"){
    TCurlyLine* gamma;
-   gamma = new TCurlyLine(65,40,80,95); gamma->SetWavy(); gamma->Draw(); //top
-   gamma = new TCurlyLine(90,47,110,60); gamma->SetWavy(); gamma->Draw(); //b
-   gamma = new TCurlyLine(85,0,105,7); gamma->SetWavy(); gamma->Draw(); //W
-   gamma = new TCurlyLine(108,-11,125,15); gamma->SetWavy(); gamma->Draw();
+   gamma = new TCurlyLine(65,40,80,95); gamma->SetWavy();gamma->SetLineColor(kBlue); gamma->Draw(); //top
+   gamma = new TCurlyLine(90,47,110,60); gamma->SetWavy();gamma->SetLineColor(kRed); gamma->Draw(); //b
+   gamma = new TCurlyLine(85,0,105,7); gamma->SetWavy();gamma->SetLineColor(kYellow); gamma->Draw(); //W
+   gamma = new TCurlyLine(108,-11,125,15); gamma->SetWavy();gamma->SetLineColor(kGreen); gamma->Draw();
    t.DrawLatex(69,75,"#gamma");
    t.DrawLatex(112,55,"#gamma");
    t.DrawLatex(108,6,"#gamma");

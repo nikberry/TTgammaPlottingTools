@@ -17,7 +17,9 @@ struct Globals {
 	static bool addHashErrors;
 	static bool addOverFlow;
 	static bool doLogPlot;
+	static bool isPreliminary;
 	static TString lumi;
+
 };
 
 } /* namespace std */

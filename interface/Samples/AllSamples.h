@@ -21,6 +21,7 @@ public:
 	Sample* mumu_data;
 	Sample* ee_data;
 	Sample* emu_data;
+	Sample* combined_data;
 	Sample* signal;
 	Sample* ttgamma;
 	Sample* ttbar;

@@ -12,12 +12,11 @@
 #include <iomanip>
 #include "TROOT.h"
 
-TH2D* getSample(TString sample, double weight, TString Variable, TString channel, TString type, TString Systematic);
+TH2D* getSample(TString sample, double weight, TString Variable, TString channel, TString type, TString Systematic, TString selection);
 //TH1D* getQCD(TString Obj, TString Variable, int RebinFact);
 //TText* doPrelim(float x, float y, TString nbtags);
-
-TH2D* getSample(TString sample, double weight, TString Variable, TString channel, TString type, TString Systematic){
-	TString dir = "/data1/TTGammaAnalysis/HistogramFiles/Version14LooseBtag/"+ Systematic +"/";
+TH2D* getSample(TString sample, double weight, TString Variable, TString channel, TString type, TString Systematic, TString selection){
+	TString dir = "/data1/TTGammaAnalysis/HistogramFiles/VersionZmasspm7LooseIso/"+ Systematic +"/";
 
 	TString syst = "";
 
@@ -40,26 +39,52 @@ TH2D* getSample(TString sample, double weight, TString Variable, TString channel
 	else	
 		syst = "";
 
-	TFile* file = new TFile(dir + sample + "_19584pb_PFElectron_PFMuon_PF2PATJets_patType1CorrectedPFMet_Photon"+syst+".root");
+	TFile* file = new TFile(dir + sample + "_19700pb_PFElectron_PFMuon_PF2PATJets_patType1CorrectedPFMet_Photon"+syst+".root");
 	//TDirectoryFile* folder = (TDirectoryFile*) file->Get("TTbarPlusMetAnalysis/QCD No Iso/Muon/");
 
-	cout << "file: " << dir + sample + "_19584pb_PFElectron_PFMuon_PF2PATJets_patType1CorrectedPFMet_Photon"+syst+".root" << endl;
-	cout << "folder: " << "TTbarPhotonAnalysis/"+channel+"/Ref selection/Photons/"+type+"/" << endl;
+	cout << "file: " << dir + sample + "_19700pb_PFElectron_PFMuon_PF2PATJets_patType1CorrectedPFMet_Photon"+syst+".root" << endl;
+
+	if(selection == "EventCount")
+		cout << "folder: " << selection+"/" << endl;
+	else
+		cout << "folder: " << selection+"/"+channel+"/Ref selection/Photons/"+type+"/" << endl;
 	
 	
 	TH2D* plot; 
+	TH2D* plot1;
 	TH2D* plot2;
 	TH2D* plot3;
 	TH2D* plot4;
 
-	plot = (TH2D*) file->Get("TTbarPhotonAnalysis/"+channel+"/Ref selection/Photons/"+type+"/"+Variable+"_1btag");
-	plot2 = (TH2D*) file->Get("TTbarPhotonAnalysis/"+channel+"/Ref selection/Photons/"+type+"/"+Variable+"_2btags");
-	plot3 = (TH2D*) file->Get("TTbarPhotonAnalysis/"+channel+"/Ref selection/Photons/"+type+"/"+Variable+"_3btags");
-	plot4 = (TH2D*) file->Get("TTbarPhotonAnalysis/"+channel+"/Ref selection/Photons/"+type+"/"+Variable+"_4orMoreBtags");
+	if(selection == "TTbarLooseSelectionAnalysis"){
 
-	plot->Add(plot2);
-	plot->Add(plot3);
-	plot->Add(plot4);
+		plot = (TH2D*) file->Get(selection+"/"+channel+"/Ref selection/Photons/"+type+"/"+Variable+"_0btag");
+		plot1 = (TH2D*) file->Get(selection+"/"+channel+"/Ref selection/Photons/"+type+"/"+Variable+"_1btag");
+	        plot2 = (TH2D*) file->Get(selection+"/"+channel+"/Ref selection/Photons/"+type+"/"+Variable+"_2btags");
+        	plot3 = (TH2D*) file->Get(selection+"/"+channel+"/Ref selection/Photons/"+type+"/"+Variable+"_3btags");
+        	plot4 = (TH2D*) file->Get(selection+"/"+channel+"/Ref selection/Photons/"+type+"/"+Variable+"_4orMoreBtags");
+
+        	plot->Add(plot2);
+        	plot->Add(plot3);
+        	plot->Add(plot4);
+
+
+	} else if(selection == "EventCount"){
+
+                plot = (TH2D*) file->Get(selection+"/"+Variable);
+	} else {
+
+		plot = (TH2D*) file->Get(selection+"/"+channel+"/Ref selection/Photons/"+type+"/"+Variable+"_1btag");
+		plot2 = (TH2D*) file->Get(selection+"/"+channel+"/Ref selection/Photons/"+type+"/"+Variable+"_2btags");
+		plot3 = (TH2D*) file->Get(selection+"/"+channel+"/Ref selection/Photons/"+type+"/"+Variable+"_3btags");
+		plot4 = (TH2D*) file->Get(selection+"/"+channel+"/Ref selection/Photons/"+type+"/"+Variable+"_4orMoreBtags");
+
+		plot->Add(plot2);
+		plot->Add(plot3);
+		plot->Add(plot4);
+	}
+
+
 
 //        if(sample == "TTJet" || sample == "TTJet_SemiLept"|| sample == "TTJet_POWHEG"|| sample == "TTJet_MCNLO"|| sample == "TTJetPTRW"){
 //	plot->SetFillColor(kRed+1);
@@ -138,7 +163,7 @@ TH2D* getSample(TString sample, double weight, TString Variable, TString channel
  TText* doPrelim(float x, float y)
 {
    std::ostringstream stream;
-   stream  << "#mu#mu, #geq 2 jets, #geq 1 b-jet, #geq 1 #gamma                   CMS Preliminary, L = 19.6 fb^{-1}";   
+   stream  << "#mu#mu, #geq 2 jets, #geq 1 b-jet, #geq 1 #gamma                                    #intLdt = 19.6 fb^{-1}";   
  
    TLatex* text = new TLatex(x, y, stream.str().c_str());
    //text->SetTextAlign(33);  //left

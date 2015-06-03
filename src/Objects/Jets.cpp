@@ -74,6 +74,10 @@ void Jets::allPlots(AllSamples samples){
      //   savePlot(samples, numberofbjets);
         savePlot(samples, numberofjets);
 
+	pt_all.rebinFact *= 7;
+	phi_all.rebinFact *= 7;
+	jet1pt.rebinFact *= 7;
+
 	setChannel("EE");
 	savePlot(samples, pt_all);
 	savePlot(samples, phi_all);

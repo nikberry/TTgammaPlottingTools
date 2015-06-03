@@ -112,8 +112,8 @@ TH1D* Object::readHistogram(Sample sample, Variable variable) {
 	plot->SetFillColor(sample.fillColor);
 	plot->SetLineColor(sample.lineColor);
 
-//	if(Globals::addOverFlow)
-//		addOverFlow(plot, variable);
+	if(Globals::addOverFlow)
+		addOverFlow(plot, variable);
 
 
 // Unfinished
@@ -150,8 +150,8 @@ TH2D* Object::readHistogram2D(Sample2D sample, Variable2D variable) {
 //        plot->SetFillColor(sample.fillColor);
 //        plot->SetLineColor(sample.lineColor);
 
-  //      if(Globals::addOverFlow)
-    //            addOverFlow(plot, variable);
+//        if(Globals::addOverFlow)
+//                addOverFlow(plot, variable);
 
 
 // Unfinished
@@ -173,18 +173,18 @@ TH2D* Object::readHistogram2D(Sample2D sample, Variable2D variable) {
 }
 
 
-//void Object::addOverFlow(TH1D* overflow, Variable variable){
+void Object::addOverFlow(TH1D* overflow, Variable variable){
 
-//	if(variable.minX > -0.1){
-//		int bin = variable.maxX/overflow->GetBinWidth(1);
-//		double error;
-//
-//		double overflow_val = overflow->IntegralAndError(bin, overflow->GetNbinsX()+1, error);
-//
-//		overflow->SetBinContent(bin, overflow_val);
-//		overflow->SetBinError(bin, error);
-//	}
-//}
+	if(variable.minX > -0.1){
+		int bin = variable.maxX/overflow->GetBinWidth(1);
+		double error;
+
+		double overflow_val = overflow->IntegralAndError(bin, overflow->GetNbinsX()+1, error);
+
+		overflow->SetBinContent(bin, overflow_val);
+		overflow->SetBinError(bin, error);
+	}
+}
 
 
 void Object::readHistos(AllSamples samples, Variable variable){
@@ -302,7 +302,7 @@ void Object::standardPlot(TH1D* data, THStack *hs, AllSamples samples, Variable 
 	data->SetMarkerStyle(20);
 	data->SetMarkerSize(0.5);
 
-	hs->SetMaximum(data->GetBinContent(data->GetMaximumBin())*1.3);
+	hs->SetMaximum(data->GetBinContent(data->GetMaximumBin())*1.4);
 	hs->GetXaxis()->SetLimits(variable.minX, variable.maxX);
 	hs->GetXaxis()->SetTitle(variable.xTitle); hs->GetXaxis()->SetTitleSize(0.05);
 	hs->GetYaxis()->SetTitle("Number of Events");hs->GetYaxis()->SetTitleSize(0.05);
@@ -314,6 +314,11 @@ void Object::standardPlot(TH1D* data, THStack *hs, AllSamples samples, Variable 
 	textChan->Draw();
 	TText* textPrelim = doPrelim(0.58,0.96);
 	textPrelim->Draw();
+
+        if(Globals::isPreliminary){                                                                                                                     
+                TText* textPreliminary = doPreliminary(0.16, 0.85);
+                textPreliminary->Draw();
+        }
 
 	if(Globals::doLogPlot){
 		c1->SetLogy();
@@ -439,8 +444,10 @@ void Object::ratioPlot(TH1D* data, THStack *hs, AllSamples samples, Variable var
 	TCanvas *c2 = new TCanvas("Plot","Plot",635, 600);
 	c2->SetFillColor(0);
 	c2->SetFrameFillStyle(0);
-	TPad *pad1 = new TPad("pad1","pad1",0,r-epsilon,1,1);
-	pad1->SetBottomMargin(epsilon);
+	//TPad *pad1 = new TPad("pad1","pad1",0,r-epsilon,1,1);
+	TPad *pad1 = new TPad("pad1","pad1",0,0.27,1,0.97);
+	pad1->SetTopMargin(0.090);//0.062
+	pad1->SetBottomMargin(0.03);//epsilon
 	c2->cd();
 	pad1->Draw();
 	pad1->cd();
@@ -451,6 +458,8 @@ void Object::ratioPlot(TH1D* data, THStack *hs, AllSamples samples, Variable var
 	hs->GetXaxis()->SetLimits(variable.minX, variable.maxX);
 	hs->GetXaxis()->SetTitle(variable.xTitle); hs->GetXaxis()->SetTitleSize(0.05);
 	hs->GetYaxis()->SetTitle("Number of Events");hs->GetYaxis()->SetTitleSize(0.05);
+	hs->GetXaxis()->SetLabelOffset(999);
+	hs->GetXaxis()->SetLabelSize(0);
 
 	if(Globals::addHashErrors){
 		TH1D* hashErrs = hashErrors(samples, variable);
@@ -464,13 +473,24 @@ void Object::ratioPlot(TH1D* data, THStack *hs, AllSamples samples, Variable var
 	TLegend* leg = legend(samples);
 	leg->Draw();
 
-	TText* textChan = doChan(0.12,0.96);
+/*	TText* textChan = doChan(0.12,0.94);
 	textChan->Draw();
-	TText* textPrelim = doPrelim(0.58,0.96);
+	TText* textPrelim = doPrelim(0.58,0.94);
+	textPrelim->Draw();*/
+
+	TText* textChan = doChan(0.12,0.92);
+	textChan->Draw();
+	TText* textPrelim = doPrelim(0.58,0.92);
 	textPrelim->Draw();
 
-	TPad *pad2 = new TPad("pad2","pad2",0,0,1,r*(1-epsilon));
-	pad2->SetTopMargin(0);
+	if(Globals::isPreliminary){
+		TText* textPreliminary = doPreliminary(0.16, 0.82);
+		textPreliminary->Draw();
+	}
+
+//	TPad *pad2 = new TPad("pad2","pad2",0,0,1,r*(1-epsilon));
+        TPad *pad2 = new TPad("pad2","pad2",0,0,1,0.26);
+	pad2->SetTopMargin(0.04);
 	pad2->SetFrameFillStyle(4000);
 	pad2->SetBottomMargin(0.4);
 	c2->cd();
@@ -483,8 +503,9 @@ void Object::ratioPlot(TH1D* data, THStack *hs, AllSamples samples, Variable var
 	ratio->SetStats(0);
 	ratio->Divide(allMC);
 
-	ratio->SetMaximum(2);
-	ratio->SetMinimum(0.);
+	ratio->SetMaximum(2.);
+	ratio->SetMinimum(0.);//0.
+
 
 //	Will need to see if this works in other situations - au moment il ne fonctionne pas pour des valeurs soin de zero.
 	if(variable.minX < 0. && ratio->GetBinWidth(1)){
@@ -493,16 +514,30 @@ void Object::ratioPlot(TH1D* data, THStack *hs, AllSamples samples, Variable var
 		ratio->SetAxisRange(0, variable.maxX-ratio->GetBinWidth(1)/2);
 	}
 
+
+
 	ratio->SetLabelSize(0.1, "X");
 	ratio->SetTitleOffset(0.5, "Y");
 	ratio->SetTitleOffset(0.8, "X");
-	ratio->GetYaxis()->SetTitle("data/MC");ratio->GetYaxis()->SetTitleSize(0.1);
+	ratio->GetYaxis()->SetTitle("data/MC");ratio->GetYaxis()->SetTitleSize(0.12);
 	ratio->GetXaxis()->SetTitle(variable.xTitle);ratio->GetXaxis()->SetTitleSize(0.15);
+	ratio->GetYaxis()->SetNdivisions(4);
+	ratio->GetYaxis()->SetLabelSize(0.08);
 	ratio->SetMarkerSize(0.);
 	ratio->Draw("ep");
+	
+	if(Globals::addHashErrors){
+		TH1D* ratioHashErrs = ratioHashErrors(samples, variable);
+		ratioHashErrs->Draw("same e2");
+	}
 
-	TLine *line = new TLine(variable.minX,1,variable.maxX,1);
-	line->Draw();
+
+
+	TLine *line = new TLine(variable.minX,1,variable.maxX,1); //1, 1
+			line->SetLineStyle(7);
+			line->SetLineColor(kCyan+3);
+			line->Draw();	
+
 
 	pad1->cd();
 
@@ -528,8 +563,9 @@ void Object::ratioPlotSignalComparison(TH1D* data,  AllSamples samples, Variable
 	TCanvas *c2 = new TCanvas("Plot","Plot",635, 600);
 	c2->SetFillColor(0);
 	c2->SetFrameFillStyle(0);
-	TPad *pad1 = new TPad("pad1","pad1",0,r-epsilon,1,1);
-	pad1->SetBottomMargin(epsilon);
+//	TPad *pad1 = new TPad("pad1","pad1",0,r-epsilon,1,1);
+	TPad *pad1 = new TPad("pad1","pad1",0,0.3,1,1);
+	pad1->SetBottomMargin(0.3); //epsilon
 	c2->cd();
 	pad1->Draw();
 	pad1->cd();
@@ -569,10 +605,11 @@ void Object::ratioPlotSignalComparison(TH1D* data,  AllSamples samples, Variable
 	TText* textPrelim = doPrelim(0.58,0.96);
 	textPrelim->Draw();
 
-	TPad *pad2 = new TPad("pad2","pad2",0,0,1,r*(1-epsilon));
+//	TPad *pad2 = new TPad("pad2","pad2",0,0,1,r*(1-epsilon));
+	TPad *pad2 = new TPad("pad2","pad2",0,0,1,0.28);
 	pad2->SetTopMargin(0);
 	pad2->SetFrameFillStyle(4000);
-	pad2->SetBottomMargin(0.4);
+	pad2->SetBottomMargin(0.6);//0.4
 	c2->cd();
 	pad2->Draw();
 	pad2->cd();
@@ -620,7 +657,17 @@ void Object::ratioPlotSignalComparison(TH1D* data,  AllSamples samples, Variable
 	delete textPrelim;
 }
 
+TH1D* Object::ratioHashErrors(AllSamples samples, Variable variable){
+	TH1D * hashErrors = allMChisto(samples, variable);
+	hashErrors->Divide(hashErrors);
 
+	hashErrors->SetFillColor(kRed);
+	hashErrors->SetFillStyle(3354);
+	hashErrors->SetMarkerSize(0.);
+	hashErrors->SetStats(0);
+
+	return hashErrors;
+}
 
 TH1D* Object::hashErrors(AllSamples samples, Variable variable){
 	TH1D * hashErrors = allMChisto(samples, variable);
@@ -636,7 +683,7 @@ TH1D* Object::hashErrors(AllSamples samples, Variable variable){
 TLegend* Object::legend(AllSamples samples){
 
 		TLegend *tleg;
-		tleg = new TLegend(0.7,0.65,0.85,0.9);
+		tleg = new TLegend(0.70,0.48,0.90,0.88);
 		tleg->SetTextSize(0.04);
 		tleg->SetBorderSize(0);
 		tleg->SetFillColor(10);
@@ -656,11 +703,11 @@ TText* Object::doChan(double x_pos,double y_pos){
 
 	  ostringstream stream;
 	if(channel == "MuMu")
-		stream  << "#mu#mu, #geq 2 jets, #geq 1 btags, #geq 1 #gamma";
+		stream  << "#mu#mu, #geq 2 jets, #geq 1 btag, #geq 1 #gamma";
 	if(channel == "EE")
-		stream  << "ee, #geq 2 jets, #geq 1 btagsi, #geq 1 #gamma";
+		stream  << "#e^{+}#e^{-}, #geq 2 jets, #geq 1 btag #geq 1 #gamma";
 	if(channel == "EMu")
-		stream  << "e#mu, #geq 2 jets, #geq 1 btags, #geq 1 #gamma";				
+		stream  << "e#mu, #geq 2 jets, #geq 1 btag, #geq 1 #gamma";				
 
 	  TLatex* text = new TLatex(x_pos, y_pos, stream.str().c_str());
 	  text->SetNDC(true);
@@ -673,7 +720,7 @@ TText* Object::doChan(double x_pos,double y_pos){
 TText* Object::doPrelim(double x_pos,double y_pos){
 
 	  ostringstream stream;
-	  stream  << "CMS Preliminary \n #int #mathcal{L} #mathrm{d}t = "+Globals::lumi;
+	  stream  << "           #sqrt{s}=8 TeV,  #intLdt="+Globals::lumi;
 
 	  TLatex* text = new TLatex(x_pos, y_pos, stream.str().c_str());
 	  text->SetNDC(true);
@@ -682,6 +729,20 @@ TText* Object::doPrelim(double x_pos,double y_pos){
 
 	  return text;
 }
+
+TText* Object::doPreliminary(double x_pos,double y_pos){
+
+          ostringstream stream;
+          stream  << "CMS Preliminary";                                                                             
+
+          TLatex* text = new TLatex(x_pos, y_pos, stream.str().c_str());
+          text->SetNDC(true);
+          text->SetTextFont(62);
+          text->SetTextSize(0.05);  // for thesis
+
+          return text;
+}
+
 
 void Object::setSelectionAndChannel(TString sel_name, TString sel_name2, TString chan){
 	selection = sel_name;
@@ -698,18 +759,18 @@ void Object::setChannel(TString chan){
 	channel = chan;
 }
 
-//void Object::rebinMethod(double rebinning){
-//
-//	TH1D* plot;
-//	double rebinning;
-//	rebinning = plot->Integral() / plot->GetNbinsX();
-//	
-//	cout << plot->Integral() << endl;
-//	
-// 	if(variable.minX < 0)
-// 		double range = -variable.minX + variable.maxX;
-// 	else
-// 		double range = variable.maxX;
-//}
+/*void Object::rebinMethod(double rebinning){
+
+	TH1D* plot;
+	double rebinning;
+	rebinning = plot->Integral() / plot->GetNbinsX();
+	
+	cout << plot->Integral() << endl;
+	
+ 	if(variable.minX < 0)
+ 		double range = -variable.minX + variable.maxX;
+ 	else
+ 		double range = variable.maxX;
+}*/
 
 } /* namespace std */

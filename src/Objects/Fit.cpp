@@ -2,7 +2,7 @@
  * Fit.cpp
  *
  *  Created on: Dec 24, 2013
- *      Author: philip
+ *      Author: N.Berry
  */
 
 #include "../../interface/Objects/Fit.h"
@@ -53,20 +53,20 @@ void fcn(int& npar, double* deriv, double& f, double par[], int flag){
 	  f = -2.0 * lnL;
 
 	  //constraints
-	   double nvjets_err =Nvjets*0.5;
+//	   double nvjets_err =Nvjets*0.5;
 	   double nqcd_err = Nqcd*1.;
 //	cout << "LL: " << lnL << endl;
 //	cout << "nsig: " << Nsignal << " ,par0: " << par[0] << endl;
 //	cout << "nvjets: " << Nvjets << " ,par1: " << par[1] << endl;
 //	cout << "nqcd: " << Nqcd << " ,par2: " << par[2] << endl;
 
-	  f += ((par[2]-Nqcd)*(par[2]-Nqcd))/(nqcd_err*nqcd_err);
-	  f += ((par[1]-Nvjets)*(par[1]-Nvjets))/(nvjets_err*nvjets_err);
+//	  f += ((par[2]-Nqcd)*(par[2]-Nqcd))/(nqcd_err*nqcd_err);
+//	  f += ((par[1]-Nvjets)*(par[1]-Nvjets))/(nvjets_err*nvjets_err);
 
 }
 
 Fit::Fit() {
-	channel = "MuMu";
+	channel = "EMu";
 	selection = "TTbarPhotonAnalysis/"+channel+"/Ref selection/Photons/SignalPhotons/";
 	folder = "Fits";
 }
@@ -77,7 +77,8 @@ Fit::~Fit() {
 
 
 void Fit::allFits(){
-	Variable RandConeChIso("Photon_RandConeChIso_barrel", "muon |#eta|", -5, 20, 2);
+	Variable RandConeChIso("Photon_RandConeChIso_barrel", "Random Cone Isolation", -5, 20, 2);
+	Variable SCFRChargedhadronIso("Photon_RhoCorrectedSCChIso_barrel", "(#rho-corr) SCFR Charge Hadron Isolation", -5, 20, 2);
 	//fits only save standard plot if doFit 3rd arg is "central"
 
 	std::vector<double> xsects;
@@ -169,7 +170,7 @@ double Fit::readAndFit(AllSamples samples, Variable variable, TString syst_folde
 	double xsect = doFit(samples, variable, syst_folder);
 
 	if(syst_folder == "central"){
-	TH1D* data = samples.mumu_data->histo;
+	TH1D* data = samples.emu_data->histo;
 	THStack *hs = buildStack(samples, variable);
 
 	standardPlot(data, hs, samples, variable);
@@ -191,7 +192,7 @@ double Fit::doFit(AllSamples samples, Variable variable, TString syst_folder){
 	//draw the templates used in the fit
 	drawTemplates(samples, variable, syst_folder);
 
-	TH1D* data = samples.mumu_data->histo;
+	TH1D* data = samples.emu_data->histo;
 
 //	if(syst_folder == "Scale_up" || syst_folder == "Scale_down" || syst_folder == "Match_up" || syst_folder == "Match_down"){
 //		vjets = (TH1D*)samples.vjets->histo_ge4j->Clone("vjets");
@@ -214,11 +215,12 @@ double Fit::doFit(AllSamples samples, Variable variable, TString syst_folder){
 //	qcd_data->Scale(qcd->Integral()/qcd_data->Integral());
 
 	//set the parameters
-	double Ntop_err, Nbg_err, Nqcd_err, Nwjets_err, Ndyjets_err, Ndiboson_err;
+	double Nttgamma_err, Nttbar_err, Ntop_err, Nsingle_t_err, Nbg_err, Nqcd_err, Nwjets_err, Ndyjets_err, Ndiboson_err;
 
+	double Nttgamma = signal->IntegralAndError(0, ttgamma->GetNbinsX()+1, Nttgamma_err);
 	double Ntop = signal->IntegralAndError(0, signal->GetNbinsX()+1, Ntop_err);
-	double Nttbar = ttbar->Integral();
-	double Nsingle_t = single_t->Integral();
+	double Nttbar = ttbar->IntegralAndError(0, ttbar->GetNbinsX()+1, Nttbar_err);
+	double Nsingle_t = single_t->IntegralAndError(0, single_t->GetNbinsX()+1, Nsingle_t_err);
 	double Nwjets  = wjets->IntegralAndError(0, wjets->GetNbinsX()+1, Nwjets_err);
 	double Ndyjets  = dyjets->IntegralAndError(0, dyjets->GetNbinsX()+1, Ndyjets_err);
 	double Ndiboson  = diboson->IntegralAndError(0, diboson->GetNbinsX()+1, Ndiboson_err);	
@@ -259,20 +261,20 @@ double Fit::doFit(AllSamples samples, Variable variable, TString syst_folder){
 	  double amin, edm, errdef;
 	  int nvpar, nparx;
 
-//	  double Nwjets_ferr = ((fitter->GetParameter(1)/Nbg)*Nwjets)*sqrt(pow(fitter->GetParError(1)/fitter->GetParameter(1) ,2) + pow(Nbg_err/Nbg ,2) + pow(Nwjets_err/Nwjets ,2));
-//	  double Ndyjets_ferr = ((fitter->GetParameter(1)/Nbg)*Ndyjets)*sqrt(pow(fitter->GetParError(1)/fitter->GetParameter(1) ,2) + pow(Nbg_err/Nbg ,2) + pow(Ndyjets_err/Ndyjets ,2));
+	  double Nwjets_ferr = ((fitter->GetParameter(1)/Nbg)*Nwjets)*sqrt(pow(fitter->GetParError(1)/fitter->GetParameter(1) ,2) + pow(Nbg_err/Nbg ,2) + pow(Nwjets_err/Nwjets ,2));
+	  double Ndyjets_ferr = ((fitter->GetParameter(1)/Nbg)*Ndyjets)*sqrt(pow(fitter->GetParError(1)/fitter->GetParameter(1) ,2) + pow(Nbg_err/Nbg ,2) + pow(Ndyjets_err/Ndyjets ,2));
 
 	  std::cout.setf(std::ios::fixed);
 	  std::cout.precision(1);
 
-//	  cout << "N_vjets" << Nbg << endl;
-//	  double totMC = Ntop + Nwjets + Ndyjets + Nqcd;
-//	  double totMC_err = sqrt(Ntop_err*Ntop_err+Nwjets_err*Nwjets_err+Ndyjets_err*Ndyjets_err+Nqcd_err*Nqcd_err);
-//	  double totFit = fitter->GetParameter(0) + fitter->GetParameter(1) + fitter->GetParameter(2);
-//	  double totFit_err = sqrt(fitter->GetParError(0)*fitter->GetParError(0) + fitter->GetParError(1)*fitter->GetParError(1) + fitter->GetParError(2)*fitter->GetParError(2));
+	  cout << "N_vjets: " << Nbg << endl;
+	  double totMC = Ntop + Nwjets + Ndyjets + Nqcd;
+	  double totMC_err = sqrt(Ntop_err*Ntop_err+Nwjets_err*Nwjets_err+Ndyjets_err*Ndyjets_err+Nqcd_err*Nqcd_err);
+	  double totFit = fitter->GetParameter(0) + fitter->GetParameter(1) + fitter->GetParameter(2);
+	  double totFit_err = sqrt(fitter->GetParError(0)*fitter->GetParError(0) + fitter->GetParError(1)*fitter->GetParError(1) + fitter->GetParError(2)*fitter->GetParError(2));
 
-//	  cout << "MC estimation & " <<  Ntop << " $\\pm$ " << Ntop_err << " & " << Nwjets << " $\\pm$ " << Nwjets_err << " & " << Ndyjets << " $\\pm$ " << Ndyjets_err << " & " << Nqcd << " $\\pm$ " << Nqcd_err << " & " << totMC << " $\\pm$ " << totMC_err << endl;
-//	  cout << "Fit results & " << fitter->GetParameter(0)  << " $\\pm$ " << fitter->GetParError(0) << " & " << (fitter->GetParameter(1)/Nbg)*Nwjets << " $\\pm$ " << Nwjets_ferr << " & " << (fitter->GetParameter(1)/Nbg)*Ndyjets << " $\\pm$ " << Ndyjets_ferr << " & " << fitter->GetParameter(2) << " $\\pm$ " << fitter->GetParError(2) <<" & " << totFit << " $\\pm$ " << totFit_err << endl;
+	  cout << "MC estimation & " <<  Ntop << " $\\pm$ " << Ntop_err << " & " << Nwjets << " $\\pm$ " << Nwjets_err << " & " << Ndyjets << " $\\pm$ " << Ndyjets_err << " & " << Nqcd << " $\\pm$ " << Nqcd_err << " & " << totMC << " $\\pm$ " << totMC_err << endl;
+	  cout << "Fit results & " << fitter->GetParameter(0)  << " $\\pm$ " << fitter->GetParError(0) << " & " << (fitter->GetParameter(1)/Nbg)*Nwjets << " $\\pm$ " << Nwjets_ferr << " & " << (fitter->GetParameter(1)/Nbg)*Ndyjets << " $\\pm$ " << Ndyjets_ferr << " & " << fitter->GetParameter(2) << " $\\pm$ " << fitter->GetParError(2) <<" & " << totFit << " $\\pm$ " << totFit_err << endl;
 
 	  fitter->GetStats(amin, edm, errdef, nvpar, nparx);
 
@@ -284,7 +286,8 @@ double Fit::doFit(AllSamples samples, Variable variable, TString syst_folder){
 		TCanvas *c3 = new TCanvas("Plot","Plot",900, 600);
 
 		  THStack* sum_fit = new THStack("sum fit","stacked histograms"); //used for stack plot
-		  sum_fit->Add(qcd);sum_fit->Add(vjets);sum_fit->Add(signal);
+		  //sum_fit->Add(qcd);
+		  sum_fit->Add(vjets);sum_fit->Add(signal);
 
 		  sum_fit->Draw("hist");
 		  data->Draw("E same");
@@ -301,15 +304,15 @@ double Fit::doFit(AllSamples samples, Variable variable, TString syst_folder){
 			TText* textPrelim = doPrelim(0.58,0.96);
 			textPrelim->Draw();
 
-		 	c3->SaveAs("Plots/"+folder+"/"+channel+"/"+syst_folder+"/"+variable.name+"_fit.pdf");
-		    c3->SaveAs("Plots/"+folder+"/"+channel+"/"+syst_folder+"/"+variable.name+"_fit.png");
+		 	c3->SaveAs("Plots/"+folder+"/TTbarPhotonAnalysis/"+channel+"/"+syst_folder+"/"+variable.name+"_fit.pdf");
+		    c3->SaveAs("Plots/"+folder+"/TTbarPhotonAnalysis/"+channel+"/"+syst_folder+"/"+variable.name+"_fit.png");
 		    delete c3;
 
-//		TH1D* Nmumu_presel;
-		double xsect;
-//		double eff = Nmumu_sig/Nmumu_presel;
-//		double xsect = ((Nmumu_sig - Nmumu_bkgd)/eff)/19700;
-//		    double xsect = (results[0]-Nsingle_t)*245.8/Nttbar;
+//		TH1D* Nemu_presel;
+//		double xsect;
+//		double eff = Nemu_sig/Nemu_presel;
+//		double xsect = ((Nemu_sig - Nemu_bkgd)/eff)/19700;
+		    double xsect = (results[0]-Nsingle_t)*245.8/Nttbar;
 // 		    double xsect_up =(results[0]+errors[0]-Nsingle_t)*245.8/Nttbar;
 // 		    double xsect_down =(results[0]-errors[0]-Nsingle_t)*245.8/Nttbar;
 // 
@@ -341,6 +344,7 @@ void Fit::drawTemplates(AllSamples samples, Variable variable, TString syst_fold
 // 		vjets = (TH1D*)samples.vjets->histo_ge4j->Clone("vjets");
 // 	}else{
 		vjets = (TH1D*)samples.vjets->histo->Clone("vjets");
+		vjets->Rebin(6);
 // 	}
 	TH1D* qcd = (TH1D*)samples.qcd->histo->Clone("qcd");
 
@@ -355,13 +359,13 @@ void Fit::drawTemplates(AllSamples samples, Variable variable, TString syst_fold
 
 	TCanvas *c1 = new TCanvas("Plot","Plot",900, 600);
 
-	  signal->Draw();
-	  vjets->Draw("same");
+	  signal->Draw("histo");
+	  vjets->Draw("histo same");
 
 // 	  if(Globals::qcdFromData)
 // 		  qcd_data->Draw("same");
 // 	  else
-		  qcd->Draw("same");
+//		  qcd->Draw("same");
 
 	  signal->SetAxisRange(variable.minX, variable.maxX);
 	  signal->GetXaxis()->SetTitle(variable.xTitle); signal->GetXaxis()->SetTitleSize(0.05);
@@ -383,8 +387,8 @@ void Fit::drawTemplates(AllSamples samples, Variable variable, TString syst_fold
 		TText* textPrelim = doPrelim(0.58,0.96);
 		textPrelim->Draw();
 
-	  c1->SaveAs("Plots/"+folder+"/"+channel+"/"+syst_folder+"/"+variable.name+"_templates.pdf");
-	  c1->SaveAs("Plots/"+folder+"/"+channel+"/"+syst_folder+"/"+variable.name+"_templates.png");
+	  c1->SaveAs("Plots/"+folder+"/TTbarPhotonAnalysis/"+channel+"/"+syst_folder+"/"+variable.name+"_templates.pdf");
+	  c1->SaveAs("Plots/"+folder+"/TTbarPhotonAnalysis/"+channel+"/"+syst_folder+"/"+variable.name+"_templates.png");
 
 	  delete c1;
 	  delete signal;
@@ -451,7 +455,7 @@ void Fit::addOverFlow(TH1D* overflow, Variable variable){
 void Fit::readHistos(AllSamples samples, Variable variable){
 
 	setSelection("TTbarPhotonAnalysis/"+channel+"/Ref selection/Photons/SignalPhotons/");
-	TH1D* data = readHistogram(*samples.mumu_data, variable, true);
+	TH1D* data = readHistogram(*samples.emu_data, variable, true);
 	TH1D* vjets = readHistogram(*samples.vjets, variable, true);
 	TH1D* wjets = readHistogram(*samples.wjets, variable, true);
 	TH1D* diboson = readHistogram(*samples.diboson, variable, true);
@@ -461,10 +465,10 @@ void Fit::readHistos(AllSamples samples, Variable variable){
 	TH1D* ttbar = readHistogram(*samples.ttbar, variable, true);
 	TH1D* single_t = readHistogram(*samples.single_t, variable, true);
 	TH1D* signal = (TH1D*) ttgamma->Clone("signal"); //was ttbar
-	signal->Add(ttbar);
-	signal->Add(single_t);
+//	signal->Add(ttbar);
+//	signal->Add(single_t);
 
-	samples.mumu_data->SetHisto(data);
+	samples.emu_data->SetHisto(data);
 	samples.ttbar->SetHisto(ttbar);
 	samples.single_t->SetHisto(single_t);
 	samples.signal->SetHisto(signal);
@@ -507,8 +511,9 @@ THStack* Fit::buildStack(AllSamples samples, Variable variable){
 
 TH1D* Fit::allMChisto(AllSamples samples, Variable variable){
 
-	TH1D *allMC = (TH1D*)samples.ttbar->histo->Clone("ratio plot");
+	TH1D *allMC = (TH1D*)samples.signal->histo->Clone("ratio plot");
 
+	allMC->Add(samples.ttbar->histo);
 	allMC->Add(samples.qcd->histo);
 	allMC->Add(samples.vjets->histo);
 	allMC->Add(samples.single_t->histo);
@@ -551,11 +556,11 @@ void Fit::standardPlot(TH1D* data, THStack *hs, AllSamples samples, Variable var
 
 	if(Globals::doLogPlot){
 		c1->SetLogy();
-		c1->SaveAs("Plots/"+folder+"/"+channel+"/Log/"+variable.name+".png");
-		c1->SaveAs("Plots/"+folder+"/"+channel+"/Log/"+variable.name+".pdf");
+		c1->SaveAs("Plots/"+folder+"/TTbarPhotonAnalysis/"+channel+"/Log/"+variable.name+".png");
+		c1->SaveAs("Plots/"+folder+"/TTbarPhotonAnalysis/"+channel+"/Log/"+variable.name+".pdf");
 	}else{
-		c1->SaveAs("Plots/"+folder+"/"+channel+"/"+variable.name+".png");
-		c1->SaveAs("Plots/"+folder+"/"+channel+"/"+variable.name+".pdf");
+		c1->SaveAs("Plots/"+folder+"/TTbarPhotonAnalysis/"+channel+"/"+variable.name+".png");
+		c1->SaveAs("Plots/"+folder+"/TTbarPhotonAnalysis/"+channel+"/"+variable.name+".pdf");
 	}
 
 	delete c1;

@@ -11,7 +11,7 @@
 #include <iostream>
 #include <sstream>
 #include <iomanip>
-//#include "tdrstyle.C"
+#include "TdrStyle.cpp"
 #include "getSamples.cpp"
 
 
@@ -20,32 +20,35 @@ void doPlotsABCD();
 TString Variable = "RhoCorrectedSCFRChIso_v._Sigma_ietaieta_barrel";
 TString Systematic = "central";
 TString type = "SignalPhotons";
+TString selection = "TTbarLooseSelectionAnalysis";
+//TString selection = "TTbarPhotonAnalysis";
 TText* doPrelim(float x, float y);
+setTDRStyle();
 
 void doPlotsABCD() {
 
 gStyle->SetOptStat(0);
 gStyle->SetPalette(1);
 set_plot_style();
-gROOT->SetBatch();
+//gROOT->SetBatch();
 
 //data
-TH2D* dataMuMu = getSample("DoubleMu", 1., Variable, "MuMu", type, Systematic);
-TH2D* dataEE = getSample("DoubleElectron", 1., Variable, "EE", type, Systematic);
-TH2D* dataEMu = getSample("MuEG", 1., Variable, "EMu", type, Systematic);
+TH2D* dataMuMu = getSample("DoubleMu", 1., Variable, "MuMu", type, Systematic, selection);
+TH2D* dataEE = getSample("DoubleElectron", 1., Variable, "EE", type, Systematic, selection);
+TH2D* dataEMu = getSample("MuEG", 1., Variable, "EMu", type, Systematic, selection);
 
 TH2D* combined = (TH2D*)dataMuMu->Clone("combined"); 
 combined->Add(dataEE);
 combined->Add(dataEMu);
 
 //mc - MuMu
-TH2D* ttgammaMuMu = getSample("TTGamma", 1, Variable, "MuMu", type, Systematic);
-TH2D* ttjetMuMu = getSample("TTJet", 1, Variable, "MuMu", type, Systematic);
-TH2D* wjetsMuMu = getSample("WJetsToLNu", 1, Variable, "MuMu", type, Systematic);
-TH2D* dyjetsMuMu = getSample("DYJetsToLL", 1, Variable, "MuMu", type, Systematic);
-TH2D* singletopMuMu = getSample("SingleTop", 1, Variable, "MuMu", type, Systematic);
-TH2D* dibosonMuMu = getSample("DiBoson", 1, Variable, "MuMu", type, Systematic);
-TH2D* qcdMuMu = getSample("QCD_All", 1, Variable, "MuMu", type, Systematic);
+TH2D* ttgammaMuMu = getSample("TTGamma", 1, Variable, "MuMu", type, Systematic, selection);
+TH2D* ttjetMuMu = getSample("TTJet", 1, Variable, "MuMu", type, Systematic, selection);
+TH2D* wjetsMuMu = getSample("WJetsToLNu", 1, Variable, "MuMu", type, Systematic, selection);
+TH2D* dyjetsMuMu = getSample("DYJetsToLL", 1, Variable, "MuMu", type, Systematic, selection);
+TH2D* singletopMuMu = getSample("SingleTop", 1, Variable, "MuMu", type, Systematic, selection);
+TH2D* dibosonMuMu = getSample("DiBoson", 1, Variable, "MuMu", type, Systematic, selection);
+TH2D* qcdMuMu = getSample("QCD_All", 1, Variable, "MuMu", type, Systematic, selection);
 
 TH2D* mcMuMu = (TH2D*)ttgammaMuMu->Clone("mcMuMu"); 
 mcMuMu->Add(ttjetMuMu);
@@ -57,13 +60,13 @@ mcMuMu->Add(qcdMuMu);
 
 
 //mc - ee
-TH2D* ttgammaEE = getSample("TTGamma", 1, Variable, "EE", type, Systematic);
-TH2D* ttjetEE = getSample("TTJet", 1, Variable, "EE", type, Systematic);
-TH2D* wjetsEE = getSample("WJetsToLNu", 1, Variable, "EE", type, Systematic);
-TH2D* dyjetsEE = getSample("DYJetsToLL", 1, Variable, "EE", type, Systematic);
-TH2D* singletopEE = getSample("SingleTop", 1, Variable, "EE", type, Systematic);
-TH2D* dibosonEE = getSample("DiBoson", 1, Variable, "EE", type, Systematic);
-TH2D* qcdEE = getSample("QCD_All", 1, Variable, "EE", type, Systematic);
+TH2D* ttgammaEE = getSample("TTGamma", 1, Variable, "EE", type, Systematic, selection);
+TH2D* ttjetEE = getSample("TTJet", 1, Variable, "EE", type, Systematic, selection);
+TH2D* wjetsEE = getSample("WJetsToLNu", 1, Variable, "EE", type, Systematic, selection);
+TH2D* dyjetsEE = getSample("DYJetsToLL", 1, Variable, "EE", type, Systematic, selection);
+TH2D* singletopEE = getSample("SingleTop", 1, Variable, "EE", type, Systematic, selection);
+TH2D* dibosonEE = getSample("DiBoson", 1, Variable, "EE", type, Systematic, selection);
+TH2D* qcdEE = getSample("QCD_All", 1, Variable, "EE", type, Systematic, selection);
 
 TH2D* mcEE = (TH2D*)ttgammaEE->Clone("mcEE"); 
 mcEE->Add(ttjetEE);
@@ -74,13 +77,13 @@ mcEE->Add(dibosonEE);
 mcEE->Add(qcdEE);
 
 //mc - emu
-TH2D* ttgammaEMu = getSample("TTGamma", 1, Variable, "EMu", type, Systematic);
-TH2D* ttjetEMu = getSample("TTJet", 1, Variable, "EMu", type, Systematic);
-TH2D* wjetsEMu = getSample("WJetsToLNu", 1, Variable, "EMu", type, Systematic);
-TH2D* dyjetsEMu = getSample("DYJetsToLL", 1, Variable, "EMu", type, Systematic);
-TH2D* singletopEMu = getSample("SingleTop", 1, Variable, "EMu", type, Systematic);
-TH2D* dibosonEMu = getSample("DiBoson", 1, Variable, "EMu", type, Systematic);
-TH2D* qcdEMu = getSample("QCD_All", 1, Variable, "EMu", type, Systematic);
+TH2D* ttgammaEMu = getSample("TTGamma", 1, Variable, "EMu", type, Systematic, selection);
+TH2D* ttjetEMu = getSample("TTJet", 1, Variable, "EMu", type, Systematic, selection);
+TH2D* wjetsEMu = getSample("WJetsToLNu", 1, Variable, "EMu", type, Systematic, selection);
+TH2D* dyjetsEMu = getSample("DYJetsToLL", 1, Variable, "EMu", type, Systematic, selection);
+TH2D* singletopEMu = getSample("SingleTop", 1, Variable, "EMu", type, Systematic, selection);
+TH2D* dibosonEMu = getSample("DiBoson", 1, Variable, "EMu", type, Systematic, selection);
+TH2D* qcdEMu = getSample("QCD_All", 1, Variable, "EMu", type, Systematic, selection);
 
 TH2D* mcEMu = (TH2D*)ttgammaEMu->Clone("mcEMu"); 
 mcEMu->Add(ttjetEMu);

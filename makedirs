@@ -97,12 +97,16 @@ mkdir Plots/ControlPlots/TTbarLooseSelectionAnalysis/MuMu/Jets
 mkdir Plots/ControlPlots/TTbarLooseSelectionAnalysis/MuMu/MET
 mkdir Plots/ControlPlots/TTbarLooseSelectionAnalysis/MuMu/Photons
 mkdir Plots/ControlPlots/TTbarLooseSelectionAnalysis/MuMu/Photons/AllPhotons/
+mkdir Plots/ControlPlots/TTbarLooseSelectionAnalysis/MuMu/Photons/NminusOnePhotons
+mkdir Plots/ControlPlots/TTbarLooseSelectionAnalysis/EE/Photons/NminusOnePhotons/Log
 mkdir Plots/ControlPlots/TTbarLooseSelectionAnalysis/MuMu/DiLepton
 mkdir Plots/ControlPlots/TTbarLooseSelectionAnalysis/MuMu/Jets/Log
 mkdir Plots/ControlPlots/TTbarLooseSelectionAnalysis/MuMu/MET/patType1CorrectedPFMet
 mkdir Plots/ControlPlots/TTbarLooseSelectionAnalysis/MuMu/MET/patType1CorrectedPFMet/Log
 mkdir Plots/ControlPlots/TTbarLooseSelectionAnalysis/MuMu/Photons
 mkdir Plots/ControlPlots/TTbarLooseSelectionAnalysis/MuMu/Photons/AllPhotons/Log
+mkdir Plots/ControlPlots/TTbarLooseSelectionAnalysis/MuMu/Photons/NminusOnePhotons
+mkdir Plots/ControlPlots/TTbarLooseSelectionAnalysis/MuMu/Photons/NminusOnePhotonsPhotons/Log
 mkdir Plots/ControlPlots/TTbarLooseSelectionAnalysis/MuMu/DiLepton/Log
 mkdir Plots/ControlPlots/TTbarLooseSelectionAnalysis/EMu/Jets
 mkdir Plots/ControlPlots/TTbarLooseSelectionAnalysis/EMu/MET
@@ -114,4 +118,6 @@ mkdir Plots/ControlPlots/TTbarLooseSelectionAnalysis/EMu/MET/patType1CorrectedPF
 mkdir Plots/ControlPlots/TTbarLooseSelectionAnalysis/EMu/MET/patType1CorrectedPFMet/Log
 mkdir Plots/ControlPlots/TTbarLooseSelectionAnalysis/EMu/Photons
 mkdir Plots/ControlPlots/TTbarLooseSelectionAnalysis/EMu/Photons/AllPhotons/Log
+mkdir Plots/ControlPlots/TTbarLooseSelectionAnalysis/MuMu/Photons/NminusOnePhotons
+mkdir Plots/ControlPlots/TTbarLooseSelectionAnalysis/MuMu/Photons/NminusOnePhotons/Log
 mkdir Plots/ControlPlots/TTbarLooseSelectionAnalysis/EMu/DiLepton/Log

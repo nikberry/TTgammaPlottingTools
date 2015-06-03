@@ -19,8 +19,8 @@ Sample::Sample() {
 }
 
 Sample::Sample(TString sample, Color_t fColor, Color_t lColor, TString systematic, TString eSystematic) {
-	cout << "Getting file: " << systematic +"/"+ sample + "_19584pb_PFElectron_PFMuon_PF2PATJets_patType1CorrectedPFMet_Photon.root" << endl;
-	file = new TFile ("/data1/TTGammaAnalysis/HistogramFiles/Version14LooseBtag/"+ systematic +"/" + sample + "_19584pb_PFElectron_PFMuon_PF2PATJets_patType1CorrectedPFMet_Photon.root");
+	cout << "Getting file: " << systematic +"/"+ sample + "_19700pb_PFElectron_PFMuon_PF2PATJets_patType1CorrectedPFMet_Photon.root" << endl;
+        file = new TFile ("/data1/TTGammaAnalysis/HistogramFiles/VersionZmasspm7LooseIso/"+ systematic +"/" + sample + "_19700pb_PFElectron_PFMuon_PF2PATJets_patType1CorrectedPFMet_Photon.root");
 	histo = new TH1D;
 	fillColor = fColor;
 	lineColor = lColor;

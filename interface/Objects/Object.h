@@ -44,6 +44,7 @@ protected:
 	void setChannel(TString chan);
 	TLegend* legend(AllSamples samples);
 	TText* doPrelim(double x_pos,double y_pos);
+        TText* doPreliminary(double x_pos,double y_pos);
 	TText* doChan(double x_pos,double y_pos);
 	TH1D* readHistogram(Sample sample, Variable variable);
 	TH2D* readHistogram2D(Sample2D sample, Variable2D variable);
@@ -53,7 +54,8 @@ protected:
 	TH1D* allMChisto(AllSamples samples, Variable variable);
 	TH2D* allMChisto2D(AllSamples2D samples, Variable2D variable);
 	TH1D* hashErrors(AllSamples samples, Variable variable);
-//	void addOverFlow(TH1D* overflow, Variable variable);
+	TH1D* ratioHashErrors(AllSamples samples, Variable variable);
+	void addOverFlow(TH1D* overflow, Variable variable);
 	void standardPlot(TH1D* data, THStack *hs, AllSamples samples, Variable variable);
 	void standardPlotSignalComparison(TH1D* data, AllSamples samples, Variable variable);
 	void standardPlot2D(TH2D* data, AllSamples2D samples, Variable2D variable);
@@ -66,7 +68,7 @@ protected:
 	void set_plot_style(); 
 	void savePlot(AllSamples samples, Variable variable);
 	void savePlot2D(AllSamples2D samples, Variable2D variable);
-//	void rebinMethod(double rebinning);
+	void rebinMethod(double rebinning);
 };
 
 } /* namespace std */

@@ -23,7 +23,19 @@ AllSamples::AllSamples(TString systematic, TString eSystematic) {
 	Sample emu_temp("MuEG", kBlack, kBlack, systematic, eSystematic);
 	*emu_data = emu_temp;
 
-	signal = new Sample;
+	combined_data = new Sample;
+	Sample combined_temp("Combined", kBlack, kBlack, systematic, eSystematic);
+	*combined_data = combined_temp;
+
+/*	signal = new Sample;
+        Sample signal_temp("TTGamma_2-to-7", kAzure+8, kBlack, systematic, eSystematic);
+        *signal = signal_temp;
+
+	ttgamma = new Sample;
+	Sample ttgamma_temp("TTGamma_2-to-7", kAzure+8, kBlack, systematic, eSystematic);
+	*ttgamma = ttgamma_temp;
+*/
+        signal = new Sample;                                                                                                                          
         Sample signal_temp("TTGamma", kAzure+8, kBlack, systematic, eSystematic);
         *signal = signal_temp;
 

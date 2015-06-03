@@ -43,26 +43,32 @@ void Photons::allPlots(AllSamples samples){
 	Variable photon_SCFRChIso_barrel("Photon_SCChIso_barrel", "SCFR Charged Hadron Iso (barrel)", 0, 110, 2);
 	Variable photon_SCFRNuIso_barrel("Photon_SCNuIso_barrel", "SCFR Neutral Hadron Iso (barrel)", 0, 35, 2);
 	Variable photon_SCFRPhIso_barrel("Photon_SCPhIso_barrel", "SCFR Photon Iso (barrel)", 0, 130, 2);
+	Variable photon_SCFRChIso_endcap("Photon_SCChIso_endcap", "SCFR Charged Hadron Iso (endcap)", 0, 110, 2);
+	Variable photon_SCFRNuIso_endcap("Photon_SCNuIso_endcap", "SCFR Neutral Hadron Iso (endcap)", 0, 35, 2);
+	Variable photon_SCFRPhIso_endcap("Photon_SCPhIso_endcap", "SCFR Photon Iso (endcap)", 0, 130, 2);	
 	Variable photon_SCFRChIso("Photon_SCChIso", "Events", 0, 20, 2);
 	Variable photon_SCFRNuIso("Photon_SCNuIso", "Events", 0, 35, 2);
 	Variable photon_SCFRPhIso("Photon_SCPhIso", "Events", 0, 130, 2);
-	Variable photon_rhoCorrSCFRChIso_barrel("Photon_RhoCorrectedSCChIso_barrel", "Events", -5, 20, 1);
+	Variable photon_rhoCorrSCFRChIso_endcap("Photon_RhoCorrectedSCChIso_endcap", "(#rho-corr) SCFR I_{Ch.had}", -5, 20, 10);
+	Variable photon_rhoCorrSCFRNuIso_endcap("Photon_RhoCorrectedSCNuIso_endcap", "Events", -5, 20, 1);
+	Variable photon_rhoCorrSCFRPhIso_endcap("Photon_RhoCorrectedSCPhIso_endcap", "Events", -5, 20, 1);
+	Variable photon_rhoCorrSCFRChIso_barrel("Photon_RhoCorrectedSCChIso_barrel", "(#rho-corr) SCFR I_{Ch.had}", -5, 20, 10);
 	Variable photon_rhoCorrSCFRNuIso_barrel("Photon_RhoCorrectedSCNuIso_barrel", "Events", -5, 20, 1);
 	Variable photon_rhoCorrSCFRPhIso_barrel("Photon_RhoCorrectedSCPhIso_barrel", "Events", -5, 20, 1);
-	Variable photon_rhoCorrSCFRChIso("Photon_RhoCorrectedSCChIso", "Events", -5, 20, 10);
+	Variable photon_rhoCorrSCFRChIso("Photon_RhoCorrectedSCChIso", "(#rho-corr) SCFR I_{Ch.had}", -5, 20, 10);
 	Variable photon_rhoCorrSCFRNuIso("Photon_RhoCorrectedSCNuIso", "Events", -5, 20, 1);
 	Variable photon_rhoCorrSCFRPhIso("Photon_RhoCorrectedSCPhIso", "Events", -5, 20, 1);
-	Variable photon_RandConeChIso("Photon_RandConeChIso", "Events", -5, 20, 1);
+	Variable photon_RandConeChIso("Photon_RandConeChIso", "Events", -5, 20, 2);
 	Variable photon_RandConeNuIso("Photon_RandConeNuIso", "Events", -5, 20, 1);
 	Variable photon_RandConePhIso("Photon_RandConePhIso", "Events", -5, 20, 1);
-	Variable photon_RandConeChIso_barrel("Photon_RandConeChIso_barrel", "Events", -5, 20, 1);
+	Variable photon_RandConeChIso_barrel("Photon_RandConeChIso_barrel", "Random Cone Iso_{Ch.had}", -5, 20, 16);
 	Variable photon_RandConeNuIso_barrel("Photon_RandConeNuIso_barrel", "Events", -5, 20, 1);
 	Variable photon_RandConePhIso_barrel("Photon_RandConePhIso_barrel", "Events", -5, 20, 1);
 	Variable photon_deltaRgammaJets("Photon_deltaR_jets", "#DeltaR(#gamma, jets)", 0, 5, 2);
 	Variable photon_deltaRgammaElectrons("Photon_deltaR_electrons", "#DeltaR(#gamma, e)", 0, 5, 2);
 	Variable photon_deltaRgammaMuons("Photon_deltaR_muons", "#DeltaR(#gamma, #mu)", 0, 5, 2);
 	//Variable2D photon_abcdCHIsoVSsigmaiEtaiEta("RhoCorrectedSCFRChIso_v._Sigma_ietaieta", "RhoCorrectedSCFRChIso", "Sigma_ietaieta", 0, 20, 2, 0, 0.1);	
-	Variable photon_sigmaietaieta_bkgd("Photon_sigma_ietaieta_barrel_background", "#sigmai#etai#eta (bkgd)", 0, 0.025, 10);
+
 
 	setSelectionAndChannel("TTbarDiLeptonAnalysis", "MuMu");
 	setPhotonSel("AllPhotons");
@@ -242,8 +248,6 @@ void Photons::allPlots(AllSamples samples){
 	savePlot(samples, photon_deltaRgammaElectrons);
 	savePlot(samples, photon_deltaRgammaMuons);
         SignalComparison(samples, photon_RandConeChIso_barrel);
-
-//	photon_sigmaietaieta_barrel->Integral();
 	
 	photon_abseta.rebinFact *= 2;
 	photon_sigmaietaieta_barrel.rebinFact *= 2;
@@ -251,9 +255,10 @@ void Photons::allPlots(AllSamples samples){
 	photon_deltaRgammaJets.rebinFact *= 10;
 	photon_deltaRgammaElectrons.rebinFact *= 2;
 	photon_deltaRgammaMuons.rebinFact *= 2;
-	photon_RandConeChIso.rebinFact *= 2;
+	photon_RandConeChIso.rebinFact *= 10;
 	photon_RandConeNuIso.rebinFact *= 2;
-	photon_RandConePhIso.rebinFact *= 2;
+	photon_RandConePhIso.rebinFact *= 10;
+	photon_RandConeChIso_barrel.rebinFact *= 8;
 	photon_rhoCorrSCFRChIso_barrel.rebinFact *= 2;
 	photon_rhoCorrSCFRNuIso_barrel.rebinFact *= 2;
 	photon_rhoCorrSCFRPhIso_barrel.rebinFact *= 2;
@@ -302,7 +307,6 @@ void Photons::allPlots(AllSamples samples){
 	savePlot(samples, photon_deltaRgammaMuons);
         SignalComparison(samples, photon_RandConeChIso_barrel);
 
-
 	setChannel("EMu");
 	savePlot(samples, photon_pt);
 	savePlot(samples, photon_eta);
@@ -346,7 +350,6 @@ void Photons::allPlots(AllSamples samples){
 	savePlot(samples, photon_deltaRgammaMuons);
         SignalComparison(samples, photon_RandConeChIso_barrel);
 
-
 	setPhotonSel("NminusOnePhotons");
 	setChannel("MuMu");
 	savePlot(samples, photon_pt);
@@ -354,10 +357,6 @@ void Photons::allPlots(AllSamples samples){
         savePlot(samples, photon_abseta);
         savePlot(samples, photon_sigmaietaieta_barrel);
         savePlot(samples, photon_sigmaietaieta_endcap);
-        savePlot(samples, photon_rhocorrchargediso_barrel);
-        savePlot(samples, photon_rhocorrchargediso_endcap);
-	savePlot(samples, photon_chargediso_barrel);
-	savePlot(samples, photon_chargediso_endcap);
 	savePlot(samples, photon_rhocorrneutraliso_barrel);
 	savePlot(samples, photon_rhocorrneutraliso_endcap);
 	savePlot(samples, photon_neutraliso_barrel);
@@ -367,29 +366,12 @@ void Photons::allPlots(AllSamples samples){
 	savePlot(samples, photon_photoniso_barrel);
 	savePlot(samples, photon_photoniso_endcap);
 	savePlot(samples, photon_htowoe);
-//        savePlot(samples, photon_numberofphotons);
 	savePlot(samples, photon_SCFRChIso_barrel);
-	savePlot(samples, photon_SCFRNuIso_barrel);
-	savePlot(samples, photon_SCFRPhIso_barrel);
-	savePlot(samples, photon_SCFRChIso);
-	savePlot(samples, photon_SCFRNuIso);
-	savePlot(samples, photon_SCFRPhIso);
-//	savePlot(samples, photon_rhoCorrSCFRChIso_barrel);
-//	savePlot(samples, photon_rhoCorrSCFRNuIso_barrel);
-//	savePlot(samples, photon_rhoCorrSCFRPhIso_barrel);
+	savePlot(samples, photon_SCFRChIso_endcap);
+	savePlot(samples, photon_rhoCorrSCFRChIso_barrel);
 	savePlot(samples, photon_rhoCorrSCFRChIso);
-	savePlot(samples, photon_rhoCorrSCFRNuIso);
-	savePlot(samples, photon_rhoCorrSCFRPhIso);
-	savePlot(samples, photon_RandConeChIso);
-	savePlot(samples, photon_RandConeNuIso);
-	savePlot(samples, photon_RandConePhIso);
-	savePlot(samples, photon_RandConeChIso_barrel);
-	savePlot(samples, photon_RandConeNuIso_barrel);
-	savePlot(samples, photon_RandConePhIso_barrel);
-//	savePlot(samples, photon_deltaRgammaJets);
-//	savePlot(samples, photon_deltaRgammaElectrons);
-//	savePlot(samples, photon_deltaRgammaMuons);
-	savePlot(samples, photon_sigmaietaieta_bkgd);
+	savePlot(samples, photon_deltaRgammaJets);
+	savePlot(samples, photon_deltaRgammaMuons);
 
 	photon_rhoCorrSCFRChIso_barrel.rebinFact *= 2; 
 
@@ -399,10 +381,6 @@ void Photons::allPlots(AllSamples samples){
         savePlot(samples, photon_abseta);
         savePlot(samples, photon_sigmaietaieta_barrel);
         savePlot(samples, photon_sigmaietaieta_endcap);
-        savePlot(samples, photon_rhocorrchargediso_barrel);
-        savePlot(samples, photon_rhocorrchargediso_endcap);
-	savePlot(samples, photon_chargediso_barrel);
-	savePlot(samples, photon_chargediso_endcap);
 	savePlot(samples, photon_rhocorrneutraliso_barrel);
 	savePlot(samples, photon_rhocorrneutraliso_endcap);
 	savePlot(samples, photon_neutraliso_barrel);
@@ -412,29 +390,12 @@ void Photons::allPlots(AllSamples samples){
 	savePlot(samples, photon_photoniso_barrel);
 	savePlot(samples, photon_photoniso_endcap);
 	savePlot(samples, photon_htowoe);
-//        savePlot(samples, photon_numberofphotons);
 	savePlot(samples, photon_SCFRChIso_barrel);
-	savePlot(samples, photon_SCFRNuIso_barrel);
-	savePlot(samples, photon_SCFRPhIso_barrel);
 	savePlot(samples, photon_SCFRChIso);
-	savePlot(samples, photon_SCFRNuIso);
-	savePlot(samples, photon_SCFRPhIso);
 	savePlot(samples, photon_rhoCorrSCFRChIso_barrel);
-	savePlot(samples, photon_rhoCorrSCFRNuIso_barrel);
-	savePlot(samples, photon_rhoCorrSCFRPhIso_barrel);
 	savePlot(samples, photon_rhoCorrSCFRChIso);
-	savePlot(samples, photon_rhoCorrSCFRNuIso);
-	savePlot(samples, photon_rhoCorrSCFRPhIso);
-	savePlot(samples, photon_RandConeChIso);
-	savePlot(samples, photon_RandConeNuIso);
-	savePlot(samples, photon_RandConePhIso);
-	savePlot(samples, photon_RandConeChIso_barrel);
-	savePlot(samples, photon_RandConeNuIso_barrel);
-	savePlot(samples, photon_RandConePhIso_barrel);
-//	savePlot(samples, photon_deltaRgammaJets);
-//	savePlot(samples, photon_deltaRgammaElectrons);
-//	savePlot(samples, photon_deltaRgammaMuons);
-        savePlot(samples, photon_sigmaietaieta_bkgd);
+	savePlot(samples, photon_deltaRgammaJets);
+	savePlot(samples, photon_deltaRgammaElectrons);
 
 	photon_rhoCorrSCFRChIso_barrel.rebinFact *= 2; 
 
@@ -444,10 +405,6 @@ void Photons::allPlots(AllSamples samples){
         savePlot(samples, photon_abseta);
         savePlot(samples, photon_sigmaietaieta_barrel);
         savePlot(samples, photon_sigmaietaieta_endcap);
-        savePlot(samples, photon_rhocorrchargediso_barrel);
-        savePlot(samples, photon_rhocorrchargediso_endcap);
-	savePlot(samples, photon_chargediso_barrel);
-	savePlot(samples, photon_chargediso_endcap);
 	savePlot(samples, photon_rhocorrneutraliso_barrel);
 	savePlot(samples, photon_rhocorrneutraliso_endcap);
 	savePlot(samples, photon_neutraliso_barrel);
@@ -457,29 +414,13 @@ void Photons::allPlots(AllSamples samples){
 	savePlot(samples, photon_photoniso_barrel);
 	savePlot(samples, photon_photoniso_endcap);
 	savePlot(samples, photon_htowoe);
-//        savePlot(samples, photon_numberofphotons);
 	savePlot(samples, photon_SCFRChIso_barrel);
-	savePlot(samples, photon_SCFRNuIso_barrel);
-	savePlot(samples, photon_SCFRPhIso_barrel);
 	savePlot(samples, photon_SCFRChIso);
-	savePlot(samples, photon_SCFRNuIso);
-	savePlot(samples, photon_SCFRPhIso);
 	savePlot(samples, photon_rhoCorrSCFRChIso_barrel);
-	savePlot(samples, photon_rhoCorrSCFRNuIso_barrel);
-	savePlot(samples, photon_rhoCorrSCFRPhIso_barrel);
 	savePlot(samples, photon_rhoCorrSCFRChIso);
-	savePlot(samples, photon_rhoCorrSCFRNuIso);
-	savePlot(samples, photon_rhoCorrSCFRPhIso);
-	savePlot(samples, photon_RandConeChIso);
-	savePlot(samples, photon_RandConeNuIso);
-	savePlot(samples, photon_RandConePhIso);
-	savePlot(samples, photon_RandConeChIso_barrel);
-	savePlot(samples, photon_RandConeNuIso_barrel);
-	savePlot(samples, photon_RandConePhIso_barrel);
-//	savePlot(samples, photon_deltaRgammaJets);
-//	savePlot(samples, photon_deltaRgammaElectrons);
-//	savePlot(samples, photon_deltaRgammaMuons);
-	savePlot(samples, photon_sigmaietaieta_bkgd);
+	savePlot(samples, photon_deltaRgammaJets);
+	savePlot(samples, photon_deltaRgammaElectrons);
+	savePlot(samples, photon_deltaRgammaMuons);
 	
 	photon_rhoCorrSCFRChIso_barrel.rebinFact *= 2; 
 
@@ -763,6 +704,81 @@ void Photons::allPlots(AllSamples samples){
 	savePlot(samples, photon_deltaRgammaElectrons);
 	savePlot(samples, photon_deltaRgammaMuons);
         SignalComparison(samples, photon_RandConeChIso_barrel);
+	
+	setPhotonSel("NminusOnePhotons");
+	setChannel("MuMu");
+	savePlot(samples, photon_pt);
+	savePlot(samples, photon_eta);
+        savePlot(samples, photon_abseta);
+        savePlot(samples, photon_sigmaietaieta_barrel);
+        savePlot(samples, photon_sigmaietaieta_endcap);
+	savePlot(samples, photon_rhocorrneutraliso_barrel);
+	savePlot(samples, photon_rhocorrneutraliso_endcap);
+	savePlot(samples, photon_neutraliso_barrel);
+	savePlot(samples, photon_neutraliso_endcap);
+	savePlot(samples, photon_rhocorrphotoniso_barrel);
+	savePlot(samples, photon_rhocorrphotoniso_endcap);
+	savePlot(samples, photon_photoniso_barrel);
+	savePlot(samples, photon_photoniso_endcap);
+	savePlot(samples, photon_htowoe);
+	savePlot(samples, photon_SCFRChIso_barrel);
+	savePlot(samples, photon_SCFRChIso);
+	savePlot(samples, photon_rhoCorrSCFRChIso_barrel);
+	savePlot(samples, photon_rhoCorrSCFRChIso);
+	savePlot(samples, photon_deltaRgammaJets);
+	savePlot(samples, photon_deltaRgammaMuons);
+
+	photon_rhoCorrSCFRChIso_barrel.rebinFact *= 2; 
+
+	setChannel("EE");
+	savePlot(samples, photon_pt);
+	savePlot(samples, photon_eta);
+        savePlot(samples, photon_abseta);
+        savePlot(samples, photon_sigmaietaieta_barrel);
+        savePlot(samples, photon_sigmaietaieta_endcap);
+	savePlot(samples, photon_rhocorrneutraliso_barrel);
+	savePlot(samples, photon_rhocorrneutraliso_endcap);
+	savePlot(samples, photon_neutraliso_barrel);
+	savePlot(samples, photon_neutraliso_endcap);
+	savePlot(samples, photon_rhocorrphotoniso_barrel);
+	savePlot(samples, photon_rhocorrphotoniso_endcap);
+	savePlot(samples, photon_photoniso_barrel);
+	savePlot(samples, photon_photoniso_endcap);
+	savePlot(samples, photon_htowoe);
+	savePlot(samples, photon_SCFRChIso_barrel);
+	savePlot(samples, photon_SCFRChIso);
+	savePlot(samples, photon_rhoCorrSCFRChIso_barrel);
+	savePlot(samples, photon_rhoCorrSCFRChIso);
+	savePlot(samples, photon_deltaRgammaJets);
+	savePlot(samples, photon_deltaRgammaElectrons);
+
+	photon_rhoCorrSCFRChIso_barrel.rebinFact *= 2; 
+
+	setChannel("EMu");
+	savePlot(samples, photon_pt);
+	savePlot(samples, photon_eta);
+        savePlot(samples, photon_abseta);
+        savePlot(samples, photon_sigmaietaieta_barrel);
+        savePlot(samples, photon_sigmaietaieta_endcap);
+	savePlot(samples, photon_rhocorrneutraliso_barrel);
+	savePlot(samples, photon_rhocorrneutraliso_endcap);
+	savePlot(samples, photon_neutraliso_barrel);
+	savePlot(samples, photon_neutraliso_endcap);
+	savePlot(samples, photon_rhocorrphotoniso_barrel);
+	savePlot(samples, photon_rhocorrphotoniso_endcap);
+	savePlot(samples, photon_photoniso_barrel);
+	savePlot(samples, photon_photoniso_endcap);
+	savePlot(samples, photon_htowoe);
+	savePlot(samples, photon_SCFRChIso_barrel);
+	savePlot(samples, photon_SCFRChIso);
+	savePlot(samples, photon_rhoCorrSCFRChIso_barrel);
+	savePlot(samples, photon_rhoCorrSCFRChIso);
+	savePlot(samples, photon_deltaRgammaJets);
+	savePlot(samples, photon_deltaRgammaElectrons);
+	savePlot(samples, photon_deltaRgammaMuons);
+
+	photon_rhoCorrSCFRChIso_barrel.rebinFact *= 2; 
+
 }
 
 void Photons::allPlots2D(AllSamples2D samples) {

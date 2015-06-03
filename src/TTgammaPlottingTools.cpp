@@ -24,7 +24,7 @@ int main() {
 	delete dummy;
 
 	AllSamples samples("central", "");
-	AllSamples2D samples2d("central", "");
+//	AllSamples2D samples2d("central", "");
 
 	CutFlow cutflow;
 	cutflow.allPlots(samples);
@@ -42,8 +42,8 @@ int main() {
 	dilepton.allPlots(samples);
 
 //      do not do muon plots and fits at the same time as it messes up the eta distn.
-//        Fit fit;
-//        fit.allFits();
+        //Fit fit;
+        //fit.allFits();
 
 	return 0;
 

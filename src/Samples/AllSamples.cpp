@@ -43,9 +43,25 @@ AllSamples::AllSamples(TString systematic, TString eSystematic) {
 	Sample ttgamma_temp("TTGamma", kAzure+8, kBlack, systematic, eSystematic);
 	*ttgamma = ttgamma_temp;
 
-	ttbar = new Sample;
-	Sample ttbar_temp("TTJet", kRed, kBlack, systematic, eSystematic);
-	*ttbar = ttbar_temp;
+//	ttbar = new Sample;
+//	Sample ttbar_temp("TTJet", kRed, kBlack, systematic, eSystematic);
+//	*ttbar = ttbar_temp;
+
+        ttbar = new Sample;
+        Sample ttbar_temp("TTbar", kRed, kBlack, systematic, eSystematic);
+        *ttbar = ttbar_temp; 
+
+        ttbar0 = new Sample;
+        Sample ttbar0_temp("TTJets_Hadronic", kRed+2, kBlack, systematic, eSystematic);
+        *ttbar0 = ttbar0_temp; 
+
+        ttbar1 = new Sample;
+        Sample ttbar1_temp("TTJets_SemiLept", kRed+1, kBlack, systematic, eSystematic);
+        *ttbar1 = ttbar1_temp; 
+
+        ttbar2 = new Sample;
+        Sample ttbar2_temp("TTJets_FullLept", kRed, kBlack, systematic, eSystematic);
+        *ttbar2 = ttbar2_temp; 
 
 	single_t = new Sample;
 	Sample single_t_temp("SingleTop", kMagenta, kBlack, systematic, eSystematic);

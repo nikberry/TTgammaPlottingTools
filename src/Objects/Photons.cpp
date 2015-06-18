@@ -61,7 +61,7 @@ void Photons::allPlots(AllSamples samples){
 	Variable photon_RandConeChIso("Photon_RandConeChIso", "Events", -5, 20, 2);
 	Variable photon_RandConeNuIso("Photon_RandConeNuIso", "Events", -5, 20, 1);
 	Variable photon_RandConePhIso("Photon_RandConePhIso", "Events", -5, 20, 1);
-	Variable photon_RandConeChIso_barrel("Photon_RandConeChIso_barrel", "Random Cone Iso_{Ch.had}", -5, 20, 16);
+	Variable photon_RandConeChIso_barrel("Photon_RandConeChIso_barrel", "Random Cone Iso_{Ch.had}", -5, 10, 15);
 	Variable photon_RandConeNuIso_barrel("Photon_RandConeNuIso_barrel", "Events", -5, 20, 1);
 	Variable photon_RandConePhIso_barrel("Photon_RandConePhIso_barrel", "Events", -5, 20, 1);
 	Variable photon_deltaRgammaJets("Photon_deltaR_jets", "#DeltaR(#gamma, jets)", 0, 5, 2);
@@ -349,6 +349,8 @@ void Photons::allPlots(AllSamples samples){
 	savePlot(samples, photon_deltaRgammaElectrons);
 	savePlot(samples, photon_deltaRgammaMuons);
         SignalComparison(samples, photon_RandConeChIso_barrel);
+
+	photon_RandConeChIso_barrel.rebinFact *= 4;
 
 	setPhotonSel("NminusOnePhotons");
 	setChannel("MuMu");

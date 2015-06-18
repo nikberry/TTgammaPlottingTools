@@ -195,6 +195,9 @@ void Object::readHistos(AllSamples samples, Variable variable){
 
 	TH1D* ttgamma = readHistogram(*samples.ttgamma, variable);
 	TH1D* ttbar = readHistogram(*samples.ttbar, variable);
+	TH1D* ttbar0 = readHistogram(*samples.ttbar0, variable);
+	TH1D* ttbar1 = readHistogram(*samples.ttbar1, variable);
+	TH1D* ttbar2 = readHistogram(*samples.ttbar2, variable);
 	TH1D* single_t = readHistogram(*samples.single_t, variable);
 	TH1D* wjets = readHistogram(*samples.wjets, variable);
 	TH1D* dyjets = readHistogram(*samples.dyjets, variable);
@@ -207,6 +210,9 @@ void Object::readHistos(AllSamples samples, Variable variable){
 
 	samples.ttgamma->SetHisto(ttgamma);
 	samples.ttbar->SetHisto(ttbar);
+	samples.ttbar0->SetHisto(ttbar0);
+	samples.ttbar1->SetHisto(ttbar1);
+	samples.ttbar2->SetHisto(ttbar2);
 	samples.single_t->SetHisto(single_t);
 	samples.wjets->SetHisto(wjets);
 	samples.dyjets->SetHisto(dyjets);
@@ -250,7 +256,18 @@ THStack* Object::buildStack(AllSamples samples, Variable variable){
 	hs->Add(samples.diboson->histo);
 	hs->Add(samples.dyjets->histo);
 	hs->Add(samples.single_t->histo);
-	hs->Add(samples.ttbar->histo);
+
+	if (Globals::splitTTbar == true)
+	{
+		hs->Add(samples.ttbar0->histo);
+		hs->Add(samples.ttbar1->histo);
+		hs->Add(samples.ttbar2->histo);
+	}
+	else if (Globals::splitTTbar == false)
+	{
+		hs->Add(samples.ttbar->histo);
+	}
+
 	hs->Add(samples.ttgamma->histo);
 
 	return hs;
@@ -258,8 +275,19 @@ THStack* Object::buildStack(AllSamples samples, Variable variable){
 
 TH1D* Object::allMChisto(AllSamples samples, Variable variable){
 
-	TH1D *allMC = (TH1D*)samples.ttbar->histo->Clone("ratio plot");
-	allMC->Add(samples.ttgamma->histo);
+	TH1D *allMC = (TH1D*)samples.ttgamma->histo->Clone("ratio plot");
+
+	if (Globals::splitTTbar == true)
+	{
+		allMC->Add(samples.ttbar0->histo);
+		allMC->Add(samples.ttbar1->histo);
+		allMC->Add(samples.ttbar2->histo);
+	}
+	else if (Globals::splitTTbar == false)
+	{
+		allMC->Add(samples.ttbar->histo);
+	}
+
 	allMC->Add(samples.qcd->histo);
 	allMC->Add(samples.diboson->histo);
 	allMC->Add(samples.dyjets->histo);
@@ -324,9 +352,17 @@ void Object::standardPlot(TH1D* data, THStack *hs, AllSamples samples, Variable 
 		c1->SetLogy();
 		c1->SaveAs("Plots/ControlPlots/"+selection+"/"+channel+"/"+objName+"/Log/"+variable.name+".png");
 		c1->SaveAs("Plots/ControlPlots/"+selection+"/"+channel+"/"+objName+"/Log/"+variable.name+".pdf");
+		if (Globals::splitTTbar)
+		{
+			c1->SaveAs("Plots/ControlPlots/"+selection+"/"+channel+"/"+objName+"/Log/"+variable.name+"_splitTTbar.pdf");
+		}
 	}else{
 		c1->SaveAs("Plots/ControlPlots/"+selection+"/"+channel+"/"+objName+"/"+variable.name+".png");
 		c1->SaveAs("Plots/ControlPlots/"+selection+"/"+channel+"/"+objName+"/"+variable.name+".pdf");
+		if (Globals::splitTTbar)
+		{
+			c1->SaveAs("Plots/ControlPlots/"+selection+"/"+channel+"/"+objName+"/"+variable.name+"_splitTTbar.pdf");
+		}
 	}
 
 	delete c1;
@@ -545,9 +581,17 @@ void Object::ratioPlot(TH1D* data, THStack *hs, AllSamples samples, Variable var
 		pad1->SetLogy();
 		c2->SaveAs("Plots/ControlPlots/"+selection+"/"+channel+"/"+objName+"/Log/"+variable.name+"_ratio.png");
 		c2->SaveAs("Plots/ControlPlots/"+selection+"/"+channel+"/"+objName+"/Log/"+variable.name+"_ratio.pdf");
+		if (Globals::splitTTbar)
+		{
+			c2->SaveAs("Plots/ControlPlots/"+selection+"/"+channel+"/"+objName+"/Log/"+variable.name+"_splitTTbar_ratio.pdf");
+		}
 	}else{
 		c2->SaveAs("Plots/ControlPlots/"+selection+"/"+channel+"/"+objName+"/"+variable.name+"_ratio.png");
 		c2->SaveAs("Plots/ControlPlots/"+selection+"/"+channel+"/"+objName+"/"+variable.name+"_ratio.pdf");
+		if (Globals::splitTTbar)
+		{
+			c2->SaveAs("Plots/ControlPlots/"+selection+"/"+channel+"/"+objName+"/Log/"+variable.name+"_splitTTbar_ratio.pdf");
+		}
 	}
 
 	delete c2;
@@ -689,7 +733,18 @@ TLegend* Object::legend(AllSamples samples){
 		tleg->SetFillColor(10);
 		tleg->AddEntry(samples.mumu_data->histo , "2012 data", "lpe");
 		tleg->AddEntry(samples.ttgamma->histo , "t#bar{t}+#gamma", "f");
-		tleg->AddEntry(samples.ttbar->histo , "t#bar{t}", "f");
+
+		if (Globals::splitTTbar == true)
+		{
+			tleg->AddEntry(samples.ttbar0->histo, "t#bar{t} 0l", "f");
+			tleg->AddEntry(samples.ttbar1->histo, "t#bar{t} 1l", "f");
+			tleg->AddEntry(samples.ttbar2->histo, "t#bar{t} 2l", "f");
+		}
+		else if (Globals::splitTTbar == false)
+		{
+			tleg->AddEntry(samples.ttbar->histo, "t#bar{t}", "f");
+		}
+
 		tleg->AddEntry(samples.single_t->histo, "Single Top"      , "f");
 		tleg->AddEntry(samples.dyjets->histo , "Z+Jets", "f");
 		tleg->AddEntry(samples.diboson->histo , "WW/ZZ/WZ", "f");

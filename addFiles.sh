@@ -12,4 +12,6 @@ echo "*********adding Diboson, DYJets, and WJets to make VJets root files in fol
 hadd $1VJets_19700pb_PFElectron_PFMuon_PF2PATJets_patType1CorrectedPFMet_Photon.root  $1DiBoson_19700pb_PFElectron_PFMuon_PF2PATJets_patType1CorrectedPFMet_Photon.root $1DYJetsToLL_19700pb_PFElectron_PFMuon_PF2PATJets_patType1CorrectedPFMet_Photon.root $1WJetsToLNu_19700pb_PFElectron_PFMuon_PF2PATJets_patType1CorrectedPFMet_Photon.root
 echo "*********adding data to make Combined root file in folder**********"
 hadd $1Combined_19700pb_PFElectron_PFMuon_PF2PATJets_patType1CorrectedPFMet_Photon.root $1Double*_19700pb_PFElectron_PFMuon_PF2PATJets_patType1CorrectedPFMet_Photon.root $1MuEG_19700pb_PFElectron_PFMuon_PF2PATJets_patType1CorrectedPFMet_Photon.root
+echo "*********adding TTJets separate to make TTbar root file in folder**********"
+hadd $1TTbar_19700pb_PFElectron_PFMuon_PF2PATJets_patType1CorrectedPFMet_Photon.root $1TTJets_FullLept_19700pb_PFElectron_PFMuon_PF2PATJets_patType1CorrectedPFMet_Photon.root $1TTJets_SemiLept_19700pb_PFElectron_PFMuon_PF2PATJets_patType1CorrectedPFMet_Photon.root $1TTJets_Hadronic_19700pb_PFElectron_PFMuon_PF2PATJets_patType1CorrectedPFMet_Photon.root
 

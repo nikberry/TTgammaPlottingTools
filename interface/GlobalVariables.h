@@ -18,6 +18,7 @@ struct Globals {
 	static bool addOverFlow;
 	static bool doLogPlot;
 	static bool isPreliminary;
+	static bool splitTTbar;
 	static TString lumi;
 
 };

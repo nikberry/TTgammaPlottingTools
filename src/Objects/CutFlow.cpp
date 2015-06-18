@@ -112,6 +112,9 @@ void CutFlow::readCutFlowHistos(AllSamples samples, Variable variable){
 
 	TH1D* ttgamma = readCutFlowHistogram(*samples.ttgamma, variable);
 	TH1D* ttbar = readCutFlowHistogram(*samples.ttbar, variable);
+	TH1D* ttbar0 = readCutFlowHistogram(*samples.ttbar0, variable);
+	TH1D* ttbar1 = readCutFlowHistogram(*samples.ttbar1, variable);
+	TH1D* ttbar2 = readCutFlowHistogram(*samples.ttbar2, variable);
 	TH1D* single_t = readCutFlowHistogram(*samples.single_t, variable);
 	TH1D* wjets = readCutFlowHistogram(*samples.wjets, variable);
 	TH1D* dyjets = readCutFlowHistogram(*samples.dyjets, variable);
@@ -140,7 +143,18 @@ THStack* CutFlow::buildStack(AllSamples samples, Variable variable){
 	hs->Add(samples.diboson->histo);
 	hs->Add(samples.dyjets->histo);
 	hs->Add(samples.single_t->histo);
-	hs->Add(samples.ttbar->histo);
+
+	if (Globals::splitTTbar == true)
+	{
+		hs->Add(samples.ttbar0->histo);
+		hs->Add(samples.ttbar1->histo);
+		hs->Add(samples.ttbar2->histo);
+	}
+	else if (Globals::splitTTbar == false)
+	{
+		hs->Add(samples.ttbar->histo);
+	}
+
 	hs->Add(samples.ttgamma->histo);
 
 	return hs;
@@ -148,9 +162,19 @@ THStack* CutFlow::buildStack(AllSamples samples, Variable variable){
 
 TH1D* CutFlow::allMChisto(AllSamples samples, Variable variable){
 
-	TH1D *allMC = (TH1D*)samples.ttbar->histo->Clone("all mc");
+	TH1D *allMC = (TH1D*)samples.ttgamma->histo->Clone("all mc");
 
-	allMC->Add(samples.ttgamma->histo);
+	if (Globals::splitTTbar == true)
+	{
+		allMC->Add(samples.ttbar0->histo);
+		allMC->Add(samples.ttbar1->histo);
+		allMC->Add(samples.ttbar2->histo);
+	}
+	else if (Globals::splitTTbar == false)
+	{
+		allMC->Add(samples.ttbar->histo);
+	}
+
 	allMC->Add(samples.qcd->histo);
 	allMC->Add(samples.diboson->histo);
 	allMC->Add(samples.dyjets->histo);
@@ -311,7 +335,18 @@ TLegend* CutFlow::legend(AllSamples samples){
 		tleg->SetFillColor(10);
 		tleg->AddEntry(samples.mumu_data->histo , "2012 data", "lpe");
 		tleg->AddEntry(samples.ttgamma->histo , "t#bar{t}+#gamma", "f");
-		tleg->AddEntry(samples.ttbar->histo , "t#bar{t}", "f");
+
+		if (Globals::splitTTbar == true)
+		{
+			tleg->AddEntry(samples.ttbar0->histo, "t#bar{t} 0l", "f");
+			tleg->AddEntry(samples.ttbar1->histo, "t#bar{t} 1l", "f");
+			tleg->AddEntry(samples.ttbar2->histo, "t#bar{t} 2l", "f");
+		}
+		else if (Globals::splitTTbar == false)
+		{
+			tleg->AddEntry(samples.ttbar->histo, "t#bar{t}", "f");
+		}
+
 		tleg->AddEntry(samples.single_t->histo, "Single Top"      , "f");
 		tleg->AddEntry(samples.dyjets->histo , "Z+Jets", "f");
 		tleg->AddEntry(samples.diboson->histo , "WW/ZZ/WZ", "f");
@@ -331,11 +366,27 @@ void CutFlow::writeTable(AllSamples samples, Variable variable){
 		TString step[11] = {"Skim" ,"Cleaning and HLT","Di-lepton Sel", "m(Z) veto", "$\\geq$ 1 jet", "$\\geq$ 2 jets", "$\\slash{E_{T}}$ cut", "$\\geq$ 1 CSV b-tag",
 		"$\\geq$ 1 Photon Presel", "$\\geq$ 1 Good Photon Postsel" , "1 Good Photon Postsel"};
 		//TString step[8] = { "Skim" ,"Cleaning and HLT","Di-lepton Sel", "#geq 1 jets", "#geq 2 jets", "#geq1 CSV b-tag", "#geq1 Good Photon", "1 Good Photon"};
-		cout << " & $t\\bar{t}+\\gamma$ & $t\\bar{t}$ & w+jets & z+jets & diboson & single-t & qcd & all MC & data" << endl;
+		if (Globals::splitTTbar == true)
+		{
+			cout << " & $t\\bar{t}+\\gamma$ & $t\\bar{t} 0l$ & $t\\bar{t} 1l$ & $t\\bar{t} 2l$ & w+jets & z+jets & diboson & single-t & qcd & all MC & data" << endl;
+		}
+		else if (Globals::splitTTbar == false)
+		{
+			cout << " & $t\\bar{t}+\\gamma$ & $t\\bar{t}$ & w+jets & z+jets & diboson & single-t & qcd & all MC & data" << endl;
+		}
+		
 
 		for(int i = 0; i < samples.ttbar->histo->GetNbinsX(); i++){
-			cout << step[i] << " & " << samples.ttgamma->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ttgamma->histo->GetBinError(i+1) << " \\"
-					<< " & " << samples.ttbar->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ttbar->histo->GetBinError(i+1) << " \\"
+			cout << step[i] << " & " << samples.ttgamma->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ttgamma->histo->GetBinError(i+1) << " \\";
+			if(Globals::splitTTbar == true){
+				cout << " & " << samples.ttbar0->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ttbar0->histo->GetBinError(i+1) << " \\"
+				     << " & " << samples.ttbar0->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ttbar0->histo->GetBinError(i+1) << " \\"
+				     << " & " << samples.ttbar0->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ttbar0->histo->GetBinError(i+1) << " \\";
+			}else if (Globals::splitTTbar == false)
+			{
+				cout << " & " << samples.ttbar->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ttbar->histo->GetBinError(i+1) << " \\";
+			}
+				cout << " & " << samples.ttbar->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ttbar->histo->GetBinError(i+1) << " \\"
 					<< " & " << samples.wjets->histo->GetBinContent(i+1) << " $\\pm$ " << samples.wjets->histo->GetBinError(i+1) << " \\"
 					<< " & " << samples.dyjets->histo->GetBinContent(i+1) << " $\\pm$ " << samples.dyjets->histo->GetBinError(i+1) << " \\"
 					<< " & " << samples.diboson->histo->GetBinContent(i+1) << " $\\pm$ " << samples.diboson->histo->GetBinError(i+1) << " \\"
@@ -355,11 +406,26 @@ void CutFlow::writeTable(AllSamples samples, Variable variable){
 					"$\\geq$ 1 Photon Presel", "$\\geq$ 1 Good Photon Postsel", "1 Good Photon Postsel"};
 		//TString step[11] = { "Skim" ,"Cleaning and HLT","Di-lepton Sel", "#geq 1 jets", "#geq 2 jets", "#geq1 CSV b-tag", "#geq 1 Photon Presel", "#geq1 Good Photon
 		//Postsel", "1 Good Photon Postsel"};
-		cout << " & $t\\bar{t}+\\gamma$ & $t\\bar{t}$ & w+jets & z+jets & diboson & single-t & qcd & all MC & data" << endl;
+		if (Globals::splitTTbar == true)
+		{
+			cout << " & $t\\bar{t}+\\gamma$ & $t\\bar{t} 0l$ & $t\\bar{t} 1l$ & $t\\bar{t} 2l$ & w+jets & z+jets & diboson & single-t & qcd & all MC & data" << endl;
+		}
+		else if (Globals::splitTTbar == false)
+		{
+			cout << " & $t\\bar{t}+\\gamma$ & $t\\bar{t}$ & w+jets & z+jets & diboson & single-t & qcd & all MC & data" << endl;
+		}
 
 		for(int i = 0; i < samples.ttbar->histo->GetNbinsX(); i++){
-			cout << step[i] << " & " << samples.ttgamma->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ttgamma->histo->GetBinError(i+1) << " \\"
-					<< " & " << samples.ttbar->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ttbar->histo->GetBinError(i+1) << " \\" 
+			cout << step[i] << " & " << samples.ttgamma->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ttgamma->histo->GetBinError(i+1) << " \\";
+			if(Globals::splitTTbar == true){
+				cout << " & " << samples.ttbar0->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ttbar0->histo->GetBinError(i+1) << " \\"
+				     << " & " << samples.ttbar0->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ttbar0->histo->GetBinError(i+1) << " \\"
+				     << " & " << samples.ttbar0->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ttbar0->histo->GetBinError(i+1) << " \\";
+			}else if (Globals::splitTTbar == false)
+			{
+				cout << " & " << samples.ttbar->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ttbar->histo->GetBinError(i+1) << " \\";
+			}
+				cout << " & " << samples.ttbar->histo->GetBinContent(i+1) << " $\\pm$ " << samples.ttbar->histo->GetBinError(i+1) << " \\" 
 					<< " & " << samples.wjets->histo->GetBinContent(i+1) << " $\\pm$ " << samples.wjets->histo->GetBinError(i+1) << " \\"
 					<< " & " << samples.dyjets->histo->GetBinContent(i+1) << " $\\pm$ " << samples.dyjets->histo->GetBinError(i+1) << " \\"
 					<< " & " << samples.diboson->histo->GetBinContent(i+1) << " $\\pm$ " << samples.diboson->histo->GetBinError(i+1) << " \\"

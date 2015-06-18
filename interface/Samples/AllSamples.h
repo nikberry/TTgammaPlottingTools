@@ -25,6 +25,9 @@ public:
 	Sample* signal;
 	Sample* ttgamma;
 	Sample* ttbar;
+	Sample* ttbar0;
+	Sample* ttbar1;
+	Sample* ttbar2;
 	Sample* single_t;
 	Sample* wjets;
 	Sample* dyjets;

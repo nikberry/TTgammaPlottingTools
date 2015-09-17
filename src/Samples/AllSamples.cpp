@@ -75,6 +75,14 @@ AllSamples::AllSamples(TString systematic, TString eSystematic) {
 	Sample dyjets_temp("DYJetsToLL", kAzure-2, kBlack, systematic, eSystematic);
 	*dyjets = dyjets_temp;
 
+	zgamma = new Sample;
+	Sample zgamma_temp("ZGToLLG", kAzure-2, kBlack, systematic, eSystematic);
+        *zgamma = zgamma_temp;
+
+	wgamma = new Sample;
+	Sample wgamma_temp("WGToLNuG", kGreen-3, kBlack, systematic, eSystematic);
+	*wgamma = wgamma_temp;
+
         vjets = new Sample;
         Sample vjets_temp("VJets", kGreen-3, kBlack, systematic, eSystematic);
         *vjets = vjets_temp;

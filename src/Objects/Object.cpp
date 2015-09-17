@@ -590,7 +590,7 @@ void Object::ratioPlot(TH1D* data, THStack *hs, AllSamples samples, Variable var
 		c2->SaveAs("Plots/ControlPlots/"+selection+"/"+channel+"/"+objName+"/"+variable.name+"_ratio.pdf");
 		if (Globals::splitTTbar)
 		{
-			c2->SaveAs("Plots/ControlPlots/"+selection+"/"+channel+"/"+objName+"/Log/"+variable.name+"_splitTTbar_ratio.pdf");
+			c2->SaveAs("Plots/ControlPlots/"+selection+"/"+channel+"/"+objName+"/"+variable.name+"_splitTTbar_ratio.pdf");
 		}
 	}
 

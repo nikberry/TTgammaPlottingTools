@@ -31,6 +31,8 @@ public:
 	Sample* single_t;
 	Sample* wjets;
 	Sample* dyjets;
+	Sample* zgamma;
+	Sample* wgamma;
 	Sample* vjets;
 	Sample* diboson;
 	Sample* qcd;

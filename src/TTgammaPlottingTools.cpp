@@ -29,17 +29,17 @@ int main() {
 	CutFlow cutflow;
 	cutflow.allPlots(samples);
 
-	Jets jets;
-	jets.allPlots(samples);
+//	Jets jets;
+//	jets.allPlots(samples);
 
-	MET met;
-	met.allPlots(samples);
+//	MET met;
+//	met.allPlots(samples);
 
 	Photons photons;
 	photons.allPlots(samples);
 
-	DiLepton dilepton;
-	dilepton.allPlots(samples);
+//	DiLepton dilepton;
+//	dilepton.allPlots(samples);
 
 //      do not do muon plots and fits at the same time as it messes up the eta distn.
         //Fit fit;
